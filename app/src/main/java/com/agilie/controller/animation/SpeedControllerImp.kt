@@ -40,11 +40,11 @@ class SpeedControllerImp : SpeedController {
             MotionEvent.ACTION_MOVE -> {
                 if (event.eventTime - event.downTime > 200) {
                     mainCircle?.onActionMove(event.x, event.y)
+                    backGroundCircle?.increaseBackLight(false)
                 }
             }
             MotionEvent.ACTION_UP -> {
                 mainCircle?.onActionUp(event.x, event.y)
-                backGroundCircle?.increaseBackLight(false)
             }
         }
         return true

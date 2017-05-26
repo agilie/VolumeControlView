@@ -3,21 +3,21 @@ package com.agilie.controller.animation.shape
 import android.graphics.BlurMaskFilter
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import com.agilie.controller.animation.Painter
+import kotlin.concurrent.thread
 
 
 class BackGroundCircle : Painter() {
 
     companion object {
-        val DELTA_TIME = 0.000_00_4
+        val DELTA_TIME = 2.0f
         val INCREASE_FACTOR = 4.0
         val DECREASE_FACTOR = 4.0
-
-        var blur_mask_radius = 40f
-        var paint: Paint? = null
-        var incremenator = Incremenator()
     }
 
+    var blur_mask_radius = 40f
+    var incremenator = Incremenator()
 
     init {
         paint = setCirclePaint()
@@ -55,39 +55,46 @@ class BackGroundCircle : Painter() {
 
     fun increaseBackLight(increase: Boolean) {
         when (increase) {
-            true -> incremenator.changeAction(1)
-            false -> incremenator.changeAction(-1)
+            true ->
+                // onIncrease()
+                incremenator.changeAction(1)
+            false ->
+                // onDecrease()
+                incremenator.changeAction(-1)
         }
     }
 
-    /* private fun onIncrease() {
-         var nextRadius = blur_mask_radius
-         var time = 0.0
-         if (!increase)
-             return
-         thread {
-             do {
-                 nextRadius += Math.pow(time, INCREASE_FACTOR).toFloat()
-                 time += DELTA_TIME
-                 paint?.maskFilter = BlurMaskFilter(nextRadius, BlurMaskFilter.Blur.OUTER)
-             } while (nextRadius < INNER_CIRCLE_STROKE_WIDTH)
-         }
-     }*/
+    private fun onIncrease() {
+        var nextRadius = blur_mask_radius
+        var time = 0.0
+        thread {
+            do {
+                nextRadius += Math.pow(time, INCREASE_FACTOR).toFloat()
+                time += DELTA_TIME
+                paint?.maskFilter = BlurMaskFilter(nextRadius, BlurMaskFilter.Blur.OUTER)
 
-    /*private fun onDecrease() {
+                Log.d("Incremenator", "onIncrease nextRadius = " + nextRadius)
+            } while (nextRadius < INNER_CIRCLE_STROKE_WIDTH)
+        }
+    }
+
+    private fun onDecrease() {
         var nextRadius = blur_mask_radius
         var time = 0.0
 
         thread {
             while (nextRadius > 0) {
-                nextRadius -= Math.pow(time, DECREASE_FACTOR).toFloat()
                 time += DELTA_TIME
                 paint?.maskFilter = BlurMaskFilter(nextRadius, BlurMaskFilter.Blur.OUTER)
+                nextRadius -= Math.pow(time, DECREASE_FACTOR).toFloat()
+
+                Log.d("Incremenator", "onDecrease nextRadius = " + nextRadius)
             }
         }
-    }*/
+    }
 
-    class Incremenator : Thread() {
+
+    inner class Incremenator : Thread() {
 
         @Volatile
         private var isIncrement = 0
@@ -100,38 +107,39 @@ class BackGroundCircle : Painter() {
 
         override fun run() {
             do {
-                do {
-                    when (isIncrement) {
-                        1 -> onIncrement()
-                        -1 -> onDecrement()
-                        else -> isAction = false
-                    }
+                sleep(16)
 
-                } while (!Thread.interrupted())
-            } while (true)
+                when (isIncrement) {
+                    1 -> onIncrement()
+                    -1 -> onDecrement()
+                    else -> isAction = false
+                }
+
+            } while (!Thread.interrupted())
         }
 
         private fun onIncrement() {
-            var time = 0.0
-            do {
-                BackGroundCircle.blur_mask_radius += Math.pow(time, DECREASE_FACTOR).toFloat()
-                time += DELTA_TIME
-                BackGroundCircle.paint?.maskFilter = BlurMaskFilter(BackGroundCircle.blur_mask_radius, BlurMaskFilter.Blur.OUTER)
+            blur_mask_radius += Math.pow(DELTA_TIME.toDouble(), INCREASE_FACTOR).toFloat()
 
-            } while (BackGroundCircle.blur_mask_radius < INNER_CIRCLE_STROKE_WIDTH && isAction)
+            if (blur_mask_radius < 320) {
+                paint?.maskFilter = BlurMaskFilter(blur_mask_radius, BlurMaskFilter.Blur.OUTER)
+                Log.d("Incremenator", "onIncrement BackGroundCircle.blur_mask_radius = " + blur_mask_radius)
+            } else {
+                isAction = false
+            }
         }
 
         private fun onDecrement() {
-            var time = 0.0
+            blur_mask_radius -= Math.pow(DELTA_TIME.toDouble(), INCREASE_FACTOR).toFloat()
 
-            while (BackGroundCircle.blur_mask_radius > 0 && isAction) {
-                BackGroundCircle.blur_mask_radius -= Math.pow(time, INCREASE_FACTOR).toFloat()
-                time += DELTA_TIME
-                paint?.maskFilter = BlurMaskFilter(BackGroundCircle.blur_mask_radius, BlurMaskFilter.Blur.OUTER)
+            if (blur_mask_radius > 0) {
+                paint?.maskFilter = BlurMaskFilter(blur_mask_radius, BlurMaskFilter.Blur.OUTER)
+                Log.d("Incremenator", "onDecrement BackGroundCircle.blur_mask_radius = " + blur_mask_radius)
+            } else {
+                isAction = false
             }
         }
     }
-
 }
 
 

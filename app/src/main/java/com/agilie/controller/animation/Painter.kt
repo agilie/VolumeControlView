@@ -16,12 +16,12 @@ abstract class Painter {
 
     open var startPoint = PointF()
     open var endPoint = PointF()
-
     open var paint: Paint? = null
     open var radius = 0f
     open var blurMaskFilter = BlurMaskFilter(1f, BlurMaskFilter.Blur.OUTER)
 
     open fun onSizeChanged(width: Int, height: Int) {}
+
     open fun onDraw(canvas: Canvas) {
         canvas.drawCircle(startPoint.x, startPoint.y, radius, paint)
     }
