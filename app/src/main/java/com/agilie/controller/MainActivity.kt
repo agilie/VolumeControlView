@@ -3,7 +3,6 @@ package com.agilie.controller
 import android.graphics.BlurMaskFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,6 +19,6 @@ class MainActivity : AppCompatActivity() {
 
         text.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 
-        controller.setOnClickListener { startActivity(Controller.getCallingIntent(this)) }
+        controller.setOnClickListener { startActivity(ControllerActivity.getCallingIntent(this)) }
     }
 }

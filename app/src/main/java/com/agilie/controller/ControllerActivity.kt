@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 
-class Controller : AppCompatActivity() {
+class ControllerActivity : AppCompatActivity() {
 
     companion object {
-        fun getCallingIntent(context: android.content.Context) = Intent(context, Controller::class.java)
+        fun getCallingIntent(context: android.content.Context) = Intent(context, ControllerActivity::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

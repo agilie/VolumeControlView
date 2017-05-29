@@ -1,6 +1,9 @@
 package com.agilie.controller.animation.shape
 
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PointF
 import com.agilie.controller.animation.Painter
 import com.agilie.controller.calculateAngleWithTwoVectors
 import com.agilie.controller.getPointOnBorderLineOfCircle
@@ -19,11 +22,14 @@ import com.agilie.controller.pointInCircle
 
 class MainCircle : Painter() {
 
-    private var movableCircle = MovableCircle()
-    private var linesList = ArrayList<SimpleLine>()
+
+    private var movableCircle: MovableCircle? = null
+    private var linesList: ArrayList<SimpleLine>? = null
 
     init {
         paint = getMainCirclePaint()
+        movableCircle = MovableCircle()
+        linesList = ArrayList<SimpleLine>()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -51,35 +57,37 @@ class MainCircle : Painter() {
     }
 
     fun onActionMove(touchX: Float, touchY: Float) {
-        if (!pointInCircle(PointF(touchX, touchY), movableCircle.startPoint, movableCircle.radius * 3))
+        if (!pointInCircle(PointF(touchX, touchY), movableCircle!!.startPoint, movableCircle!!.radius * 4))
             return
-        linesList.forEach { it.updateLinePaint(false) }
+        linesList?.forEach { it.updateLinePaint(false) }
 
         getLinesArea(touchX, touchY).forEach { it.updateLinePaint(true) }
 
-        movableCircle.onActionMove(touchX, touchY, startPoint.x, startPoint.y, radius)
+        movableCircle?.onActionMove(touchX, touchY, startPoint.x, startPoint.y, radius)
     }
 
-    fun onActionDown(touchX: Float, touchY: Float) {
-        if (!pointInCircle(PointF(touchX, touchY), movableCircle.startPoint, movableCircle.radius))
-            return
+    fun onActionDown(touchX: Float, touchY: Float): Boolean {
+        if (!pointInCircle(PointF(touchX, touchY), movableCircle!!.startPoint, movableCircle!!.radius * 2))
+            return false
 
         getLinesArea(touchX, touchY).forEach { it.updateLinePaint(true) }
+        return true
     }
 
-    fun onActionUp(touchX: Float, touchY: Float) {
-        linesList.forEach { it.updateLinePaint(false) }
+    fun onActionUp(touchX: Float, touchY: Float): Boolean {
+        linesList?.forEach { it.updateLinePaint(false) }
+        return true
     }
 
     private fun getLinesArea(touchX: Float, touchY: Float): List<SimpleLine> {
         val alfa = Math.round(calculateAngleWithTwoVectors(touchX, touchY, startPoint.x, startPoint.y))
 
-        return linesList.filter { filterLinesList(it, alfa) }
+        return linesList!!.filter { filterLinesList(it, alfa) }
     }
 
     private fun drawAllShapes(canvas: Canvas) {
-        movableCircle.onDraw(canvas)
-        linesList.forEach {
+        movableCircle?.onDraw(canvas)
+        linesList?.forEach {
             it.onDraw(canvas)
         }
     }
@@ -92,8 +100,8 @@ class MainCircle : Painter() {
     }
 
     private fun updateMovableShape() {
-        movableCircle.setCoordinatesOfCenter(startPoint, radius)
-        movableCircle.radius = INNER_CIRCLE_STROKE_WIDTH / 2
+        movableCircle?.setCoordinatesOfCenter(startPoint, radius)
+        movableCircle?.radius = INNER_CIRCLE_STROKE_WIDTH / 2
     }
 
 
@@ -110,7 +118,7 @@ class MainCircle : Painter() {
             val point2 = getPointOnBorderLineOfCircle(startPoint.x,
                     startPoint.y, radius + LINE_LENGTH, i.toDouble())
             line.endPoint = point2
-            linesList.add(line)
+            linesList?.add(line)
         }
     }
 

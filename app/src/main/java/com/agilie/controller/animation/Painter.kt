@@ -1,6 +1,5 @@
 package com.agilie.controller.animation
 
-import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PointF
@@ -12,13 +11,17 @@ abstract class Painter {
         val LINE_LENGTH = 55f
         val FULL_CIRCLE = 360
         val CAPTURE_ANGLE = 10
+        val DELTA_TIME = 0.09
+        val INCREASE_FACTOR = 6.0
+        val DECREASE_FACTOR = 6.0
+        val BLUR_MASK_RADIUS = 40f
+        val OUTER_BLUR_MASK_RADIUS = 60f
     }
 
     open var startPoint = PointF()
     open var endPoint = PointF()
     open var paint: Paint? = null
     open var radius = 0f
-    open var blurMaskFilter = BlurMaskFilter(1f, BlurMaskFilter.Blur.OUTER)
 
     open fun onSizeChanged(width: Int, height: Int) {}
 

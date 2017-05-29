@@ -41,12 +41,11 @@ class MovableCircle : Painter() {
     }
 
     private fun getMovableCirclePaint(): Paint {
-        blurMaskFilter = BlurMaskFilter(20f, BlurMaskFilter.Blur.OUTER)
         val paint = Paint().apply {
             color = Color.rgb(239, 77, 30)
             isAntiAlias = true
             style = Paint.Style.FILL
-            maskFilter = blurMaskFilter
+            maskFilter = BlurMaskFilter(20f, BlurMaskFilter.Blur.OUTER)
         }
         return paint
     }

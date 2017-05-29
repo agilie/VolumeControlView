@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/shape"
-    tools:context="com.agilie.controller.Controller">
+    tools:context="com.agilie.controller.ControllerActivity">
 
     <com.agilie.controller.view.CircleView
         android:id="@+id/circle_view"
