@@ -8,6 +8,7 @@ import com.agilie.controller.animation.painter.Painter
 import com.agilie.controller.calculateAngleWithTwoVectors
 import com.agilie.controller.getPointOnBorderLineOfCircle
 import com.agilie.controller.view.NextControllerView
+import com.agilie.controller.view.NextControllerView.Companion.INNER_CIRCLE_STROKE_WIDTH
 
 class NextControllerImpl(val innerCircleImp: InnerCircleImp,
                          val mainCircleImp: MainCircleImp,
@@ -27,7 +28,7 @@ class NextControllerImpl(val innerCircleImp: InnerCircleImp,
 
     private var spiralStartPoint: PointF? = null
     private var pathPaint = Paint().apply {
-        color = Color.WHITE
+        color = Color.BLACK
         isAntiAlias = true
         style = Paint.Style.FILL
 
@@ -35,16 +36,17 @@ class NextControllerImpl(val innerCircleImp: InnerCircleImp,
 
     override fun onDraw(canvas: Canvas) {
 
-        //mainCircleImp.onDraw(canvas)
+        mainCircleImp.onDraw(canvas)
 
         //arcImp.onDraw(canvas)
-        //innerCircleImp.onDraw(canvas)
+        innerCircleImp.onDraw(canvas)
 
-        canvas.drawPath(mainCirclePath, mainCircleImp.paint)
-        canvas.drawPath(innerCirclePath, innerCircleImp.paint)
+        //canvas.drawPath(mainCirclePath, mainCircleImp.paint)
+
         canvas.drawPath(spiralPath, pathPaint)
-
         movableCircleImp.onDraw(canvas)
+        //canvas.drawPath(innerCirclePath, innerCircleImp.paint)
+
 
     }
 
@@ -57,6 +59,11 @@ class NextControllerImpl(val innerCircleImp: InnerCircleImp,
 
         mainCirclePath.addCircle(mainCircleImp.center.x, mainCircleImp.center.y, mainCircleImp.radius, Path.Direction.CW)
         innerCirclePath.addCircle(innerCircleImp.center.x, innerCircleImp.center.y, innerCircleImp.radius, Path.Direction.CW)
+
+
+        //spiralPath.fillType = Path.FillType.EVEN_ODD
+        //innerCirclePath.fillType =Path.FillType.INVERSE_EVEN_ODD
+
 
     }
 
@@ -73,7 +80,7 @@ class NextControllerImpl(val innerCircleImp: InnerCircleImp,
             y = mainCircleCenter.y - eventRadius
         }
         arcImp.setStartPoint(mainCircleCenter)
-        spiralStartPoint = getPointOnBorderLineOfCircle(mainCircleCenter, innerCircleImp.radius, 0.0)
+        spiralStartPoint = getPointOnBorderLineOfCircle(mainCircleCenter, innerCircleImp.radius + INNER_CIRCLE_STROKE_WIDTH, 0.0)
 
     }
 
@@ -100,7 +107,7 @@ class NextControllerImpl(val innerCircleImp: InnerCircleImp,
             }
             MotionEvent.ACTION_UP -> {
                 onActionUp(event)
-                spiralPath.reset()
+                //spiralPath.reset()
             }
         }
     }
@@ -109,9 +116,11 @@ class NextControllerImpl(val innerCircleImp: InnerCircleImp,
     private fun onAction(touchPointF: PointF) {
         movableCircleImp.onActionMove(touchPointF, mainCircleImp.center, eventRadius)
         spiralPath.reset()
-        spiralPath.fillType = Path.FillType.EVEN_ODD
-        spiralPath.moveTo(spiralStartPoint!!.x, spiralStartPoint!!.y)
-        getPointLineTo(touchPointF)
+
+        //spiralPath.moveTo(spiralStartPoint!!.x, spiralStartPoint!!.y)
+        //getPointLineTo(touchPointF)
+        bigSpline(touchPointF)
+
     }
 
     private fun onActionUp(event: MotionEvent) {
@@ -119,18 +128,62 @@ class NextControllerImpl(val innerCircleImp: InnerCircleImp,
     }
 
     private fun getPointLineTo(touchPointF: PointF) {
-        val alfa = Math.round(calculateAngleWithTwoVectors(touchPointF, mainCircleImp.center))
+        var alfa = Math.round(calculateAngleWithTwoVectors(touchPointF, mainCircleImp.center))
         for (i in 0..alfa) {
-            val radius = innerCircleImp.radius+2 + distance * i
+            val radius = innerCircleImp.radius + 2 + distance * i
             val point = getPointOnBorderLineOfCircle(mainCircleImp.center, radius, i.toDouble())
             spiralPath.lineTo(point.x, point.y)
-            Log.d("NextControllerImpl", radius.toString())
+            //Log.d("NextControllerImpl", radius.toString())
         }
-        for (i in alfa..360 step 3) {
-            val nextPoint = getPointOnBorderLineOfCircle(mainCircleImp.center, innerCircleImp.radius+2, i.toDouble())
+        while (alfa >= 0) {
+            val nextPoint = getPointOnBorderLineOfCircle(mainCircleImp.center, innerCircleImp.radius + 2, alfa.toDouble())
             spiralPath.lineTo(nextPoint.x, nextPoint.y)
+            alfa -= 2
+            Log.d("NextControllerImpl", alfa.toString())
         }
-        spiralPath.moveTo(spiralStartPoint!!.x, spiralStartPoint!!.y)
+        spiralPath.close()
+
+    }
+
+
+    private fun bigSpline(touchPointF: PointF) {
+
+        val alfa = Math.round(calculateAngleWithTwoVectors(touchPointF, innerCircleImp.center))
+        val startPoint = getPointOnBorderLineOfCircle(innerCircleImp.center, innerCircleImp.radius + 2, alfa.toDouble())
+        val controlPoint2 = getPointOnBorderLineOfCircle(mainCircleImp.center, mainCircleImp.radius, alfa.toDouble())
+
+        val radius = innerCircleImp.radius  + distance * alfa
+        val controlPoint3 = getPointOnBorderLineOfCircle(mainCircleImp.center, radius, alfa.toDouble())
+
+        spiralPath.moveTo(startPoint.x, startPoint.y)
+        spiralPath.lineTo(controlPoint2.x, controlPoint2.y)
+
+        // Движение по внешней окружности до точки касания на внешней окружности
+        for (i in alfa..360 + alfa step 2) {
+            val point = getPointOnBorderLineOfCircle(mainCircleImp.center, mainCircleImp.radius, i.toDouble())
+            spiralPath.lineTo(point.x, point.y)
+        }
+        //Move to control point 3
+        spiralPath.lineTo(controlPoint3.x, controlPoint3.y)
+
+
+        alfa.downTo(0).forEach {
+            val radius = innerCircleImp.radius +  distance * it
+            val point = getPointOnBorderLineOfCircle(mainCircleImp.center, radius, it.toDouble())
+            //Log.d("NextControllerImpl", alfa.toString())
+            spiralPath.lineTo(point.x, point.y)
+        }
+
+        //Движение по внутренней окружности , предусмотреть возможность стыковке с точкой №1
+        var startAlfa = Math.round(calculateAngleWithTwoVectors(touchPointF, innerCircleImp.center))
+        for (i in 0..360 step 2) {
+            val point = getPointOnBorderLineOfCircle(innerCircleImp.center, innerCircleImp.radius + 2, i.toDouble())
+            if (i.toLong() == startAlfa) {
+                spiralPath.lineTo(point.x, point.y)
+            }
+            spiralPath.lineTo(point.x, point.y)
+        }
+
 
     }
 }

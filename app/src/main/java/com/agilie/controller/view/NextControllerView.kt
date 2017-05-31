@@ -1,7 +1,6 @@
 package com.agilie.controller.view
 
 import android.content.Context
-import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -10,15 +9,15 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.agilie.controller.animation.NextControllerImpl
+import com.agilie.controller.animation.painter.ArcImp
 import com.agilie.controller.animation.painter.InnerCircleImp
 import com.agilie.controller.animation.painter.MainCircleImp
 import com.agilie.controller.animation.painter.MovableCircleImp
-import com.agilie.controller.animation.painter.ArcImp
 
 class NextControllerView : ViewGroup, View.OnTouchListener {
 
     companion object {
-        val INNER_CIRCLE_STROKE_WIDTH = 6f
+        val INNER_CIRCLE_STROKE_WIDTH = 4f
         val LINE_LENGTH = 55f
         val FULL_CIRCLE = 360
         val CAPTURE_ANGLE = 10
@@ -75,7 +74,7 @@ class NextControllerView : ViewGroup, View.OnTouchListener {
     }
 
     private fun setMainCirclePaint() = Paint().apply {
-        color = Color.rgb(0, 0, 0)
+        color = Color.BLUE
         style = Paint.Style.FILL
         isAntiAlias = true
     }
