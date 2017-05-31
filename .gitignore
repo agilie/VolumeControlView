@@ -4,7 +4,7 @@
 # Crashlytics configuations
 com_crashlytics_export_strings.xml
 
-# Local configuration file (sdk path, etc)
+# Local configuration file (sdk spiralPath, etc)
 local.properties
 
 # Gradle generated files

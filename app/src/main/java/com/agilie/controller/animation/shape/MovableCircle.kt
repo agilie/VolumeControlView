@@ -17,11 +17,16 @@ import com.agilie.controller.getPointOnBorderLineOfCircle
  * */
 
 
-class MovableCircle : Painter() {
+class MovableCircle(var movableListener: MovableListener) : Painter() {
+
+    interface MovableListener {
+        fun onMovableCircle(value: Double)
+    }
 
     init {
         paint = getMovableCirclePaint()
     }
+
 
     /** Set coordinates of default center */
     fun setCoordinatesOfCenter(point: PointF, innerRadius: Float) {
@@ -33,6 +38,8 @@ class MovableCircle : Painter() {
 
     fun onActionMove(touchX: Float, touchY: Float, innerX: Float, innerY: Float, innerRadius: Float) {
         val alfa = calculateAngleWithTwoVectors(touchX, touchY, innerX, innerY)
+        movableListener?.onMovableCircle(alfa)
+
         val point = getPointOnBorderLineOfCircle(innerX, innerY, innerRadius, alfa)
         startPoint.apply {
             x = point.x

@@ -1,7 +1,7 @@
 # Add project specific ProGuard rules here.
 # By default, the flags in this file are appended to flags specified
 # in /Users/eugene/Library/Android/sdk/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
+# You can edit the include spiralPath and order by changing the proguardFiles
 # directive in build.gradle.
 #
 # For more details, see
@@ -16,10 +16,10 @@
 #   public *;
 #}
 
-# Uncomment this to preserve the linesList number information for
+# Uncomment this to preserve the linesMap number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable
 
-# If you keep the linesList number information, uncomment this to
+# If you keep the linesMap number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile

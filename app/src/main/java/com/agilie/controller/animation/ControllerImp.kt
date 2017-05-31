@@ -4,17 +4,27 @@ import android.graphics.Canvas
 import android.view.MotionEvent
 import com.agilie.controller.animation.shape.BackGroundCircle
 import com.agilie.controller.animation.shape.MainCircle
+import com.agilie.controller.animation.shape.MovableCircle
 
-class SpeedControllerImp : SpeedController {
+class ControllerImp : Controller, MovableCircle.MovableListener {
 
+    interface ControllerMoveListener {
+        fun onMove(value: Double)
+        fun onStartMove(start: Boolean)
+        fun onStopMove(stop: Boolean)
+    }
 
     private var mainCircle: MainCircle? = null
+    private var movableCircle: MovableCircle? = null
     private var backGroundCircle: BackGroundCircle? = null
     private var width = 0
     private var height = 0
 
+    var controllerListener: ControllerMoveListener? = null
+
     init {
-        mainCircle = MainCircle()
+        movableCircle = MovableCircle(this)
+        mainCircle = MainCircle(movableCircle!!)
         backGroundCircle = BackGroundCircle()
     }
 
@@ -34,9 +44,8 @@ class SpeedControllerImp : SpeedController {
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
-                if (mainCircle?.onActionDown(event.x, event.y)!!) {
-                    backGroundCircle?.increaseBackLight(true)
-                }
+                val increase = mainCircle?.onActionDown(event.x, event.y)
+                increase?.let { onActionStart(it) }
             }
             MotionEvent.ACTION_MOVE -> {
                 if (event.eventTime - event.downTime > 200) {
@@ -44,12 +53,25 @@ class SpeedControllerImp : SpeedController {
                 }
             }
             MotionEvent.ACTION_UP -> {
-                if (mainCircle?.onActionUp(event.x, event.y)!!) {
-                    backGroundCircle?.increaseBackLight(false)
-                }
+                val decrease = mainCircle?.onActionUp(event.x, event.y)
+                decrease?.let { onActionStop(decrease) }
             }
         }
         return true
+    }
+
+    override fun onMovableCircle(value: Double) {
+        controllerListener?.onMove(value)
+    }
+
+    private fun onActionStart(start: Boolean) {
+        backGroundCircle?.increaseBackLight(start)
+        controllerListener?.onStartMove(start)
+    }
+
+    private fun onActionStop(stop: Boolean) {
+        backGroundCircle?.increaseBackLight(!stop)
+        controllerListener?.onStopMove(stop)
     }
 
 }

@@ -5,7 +5,8 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import com.agilie.controller.animation.SpeedControllerImp
+import android.view.ViewGroup
+import com.agilie.controller.animation.ControllerImp
 
 
 /** Action Flow
@@ -15,9 +16,9 @@ import com.agilie.controller.animation.SpeedControllerImp
  *
  * */
 
-class CircleView : View {
+class ControllerView : ViewGroup, View.OnTouchListener {
 
-    private var controller: SpeedControllerImp? = null
+    var controller: ControllerImp? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -33,20 +34,24 @@ class CircleView : View {
         invalidate()
     }
 
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         controller?.onSizeChanged(w, h)
         super.onSizeChanged(w, h, oldw, oldh)
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+    override fun onTouch(v: View, event: MotionEvent): Boolean {
         controller?.onTouchEvent(event)
         return true
     }
 
     private fun init() {
+        setLayerType(ViewGroup.LAYER_TYPE_SOFTWARE, null)
         setWillNotDraw(false)
-        controller = SpeedControllerImp()
+        setOnTouchListener(this)
+        controller = ControllerImp()
     }
-
-
 }

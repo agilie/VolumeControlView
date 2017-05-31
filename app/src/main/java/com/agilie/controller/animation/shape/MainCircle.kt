@@ -20,15 +20,12 @@ import com.agilie.controller.pointInCircle
  * Repaint simple line when circle move
  * */
 
-class MainCircle : Painter() {
+class MainCircle(var movableCircle: MovableCircle) : Painter() {
 
-
-    private var movableCircle: MovableCircle? = null
     private var linesList: ArrayList<SimpleLine>? = null
 
     init {
         paint = getMainCirclePaint()
-        movableCircle = MovableCircle()
         linesList = ArrayList<SimpleLine>()
     }
 

@@ -14,7 +14,18 @@ class ControllerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_controller)
 
-        val circle_view = findViewById(R.id.circle_view)
-        circle_view.setOnTouchListener { v, event -> false }
+       /* controller_view.controller?.controllerListener = (object : ControllerImp.ControllerMoveListener {
+            override fun onMove(value: Double) {
+                Log.d("ControllerActivity", "onMove = " + value)
+            }
+
+            override fun onStartMove(start: Boolean) {
+                Log.d("ControllerActivity", "onStart = " + start)
+            }
+
+            override fun onStopMove(stop: Boolean) {
+                Log.d("ControllerActivity", "onStop = " + stop)
+            }
+        })*/
     }
 }
