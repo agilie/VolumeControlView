@@ -1,18 +1,14 @@
 package com.agilie.controller.view
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import com.agilie.controller.R
 import com.agilie.controller.animation.NextControllerImpl
-import com.agilie.controller.animation.painter.ArcImp
-import com.agilie.controller.animation.painter.InnerCircleImp
-import com.agilie.controller.animation.painter.MainCircleImp
-import com.agilie.controller.animation.painter.MovableCircleImp
+import com.agilie.controller.animation.painter.*
 
 class NextControllerView : ViewGroup, View.OnTouchListener {
 
@@ -63,6 +59,9 @@ class NextControllerView : ViewGroup, View.OnTouchListener {
 
 
     private fun init() {
+
+        val bitmap = BitmapFactory.decodeResource(resources,
+                R.drawable.gradient_circle)
         setLayerType(ViewGroup.LAYER_TYPE_SOFTWARE, null)
         setWillNotDraw(false)
         setOnTouchListener(this)
@@ -70,7 +69,9 @@ class NextControllerView : ViewGroup, View.OnTouchListener {
                 InnerCircleImp(setInnerCirclePaint()),
                 MainCircleImp(setMainCirclePaint()),
                 MovableCircleImp(setMovableCirclePaint()),
-                ArcImp(setSimpleLinePaint()))
+                ArcImp(setSimpleLinePaint()),
+                SpiralPath(Path(),setSpiralPathPaint()),
+                bitmap)
     }
 
     private fun setMainCirclePaint() = Paint().apply {
@@ -98,4 +99,13 @@ class NextControllerView : ViewGroup, View.OnTouchListener {
         isAntiAlias = true
         style = Paint.Style.FILL
     }
+
+    private fun setSpiralPathPaint()
+            = Paint().apply {
+        color = Color.BLACK
+        isAntiAlias = true
+        style = Paint.Style.FILL
+    }
 }
+
+

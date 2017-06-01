@@ -2,22 +2,26 @@ package com.agilie.controller
 
 import android.graphics.PointF
 
-fun getPointOnBorderLineOfCircle(point: PointF, radius: Float, alfa: Double = 0.0) =
-        PointF().apply {
-            x = (radius * Math.cos(Math.toRadians(alfa - 90.0)) + point.x).toFloat()
-            y = (radius * Math.sin(Math.toRadians(alfa - 90.0)) + point.y).toFloat()
+fun getPointOnBorderLineOfCircle(point: PointF?, radius: Float, alfa: Double = 0.0) =
+        PointF()?.apply {
+            if (point != null) {
+                x = (radius * Math.cos(Math.toRadians(alfa - 90.0)) + point.x).toFloat()
+                y = (radius * Math.sin(Math.toRadians(alfa - 90.0)) + point.y).toFloat()
+            }
         }
 
-fun calculateAngleWithTwoVectors(touch: PointF, center: PointF): Double {
-    var angle: Double
-    val x2 = touch.x - center.x
-    val y2 = touch.y - center.y
-    val d1 = Math.sqrt((center.y * center.y).toDouble())
-    val d2 = Math.sqrt((x2 * x2 + y2 * y2).toDouble())
-    if (touch.x >= center.x) {
-        angle = Math.toDegrees(Math.acos((-center.y * y2) / (d1 * d2)))
-    } else
-        angle = 360 - Math.toDegrees(Math.acos((-center.y * y2) / (d1 * d2)))
+fun calculateAngleWithTwoVectors(touch: PointF?, center: PointF?): Double {
+    var angle = 0.0
+    if (touch != null && center != null) {
+        val x2 = touch.x - center.x
+        val y2 = touch.y - center.y
+        val d1 = Math.sqrt((center.y * center.y).toDouble())
+        val d2 = Math.sqrt((x2 * x2 + y2 * y2).toDouble())
+        if (touch.x >= center.x) {
+            angle = Math.toDegrees(Math.acos((-center.y * y2) / (d1 * d2)))
+        } else
+            angle = 360 - Math.toDegrees(Math.acos((-center.y * y2) / (d1 * d2)))
+    }
     return angle
 }
 
