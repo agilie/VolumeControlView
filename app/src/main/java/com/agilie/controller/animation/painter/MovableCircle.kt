@@ -2,7 +2,7 @@ package com.agilie.controller.animation.painter
 
 import android.graphics.PointF
 
-interface MovableCircle : Painter, Circle {
+interface MovableCircle : Painter {
 
     fun onActionMove(pointF: PointF, center: PointF, eventRadius: Float)
     fun onActionDown(pointF: PointF)

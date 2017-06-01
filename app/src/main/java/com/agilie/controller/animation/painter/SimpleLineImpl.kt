@@ -4,18 +4,18 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PointF
 
-class MainCircleImp(val paint: Paint) : MainCircle {
+class SimpleLineImpl(val paint: Paint) : Painter {
 
-    var radius = 0f
-    var center = PointF()
+    var startPoint = PointF()
+    var endPoint = PointF()
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawCircle(center.x, center.y, radius, paint)
+        canvas.drawLine(startPoint.x,
+                startPoint.y, endPoint.x, endPoint.y, paint)
     }
 
-
     override fun onSizeChanged(w: Int, h: Int) {
-
     }
 
 }
+

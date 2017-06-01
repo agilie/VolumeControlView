@@ -2,14 +2,13 @@ package com.agilie.controller.animation.painter
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Path
 import android.graphics.PointF
 import android.util.Log
 import com.agilie.controller.calculateAngleWithTwoVectors
 import com.agilie.controller.getPointOnBorderLineOfCircle
 import com.agilie.controller.pointInCircle
 
-class MovableCircleImp(val paint: Paint) : MovableCircle {
+class MovableCircleImpl(val paint: Paint) : MovableCircle {
 
     var center = PointF()
     var radius = 0f
@@ -30,12 +29,12 @@ class MovableCircleImp(val paint: Paint) : MovableCircle {
     override fun onActionMove(touchPointF: PointF, pointF: PointF, eventRadius: Float) {
         val alfa = calculateAngleWithTwoVectors(touchPointF, pointF)
 
-        val point = getPointOnBorderLineOfCircle(pointF, eventRadius, alfa)
+        val point = getPointOnBorderLineOfCircle(pointF, eventRadius, alfa.toInt())
         center.apply {
             x = point.x
             y = point.y
         }
-        Log.d("MovableCircleImp", alfa.toString())
+        Log.d("MovableCircleImpl", alfa.toString())
     }
 
     override fun onActionUp(pointF: PointF) {

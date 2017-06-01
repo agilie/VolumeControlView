@@ -1,9 +1,9 @@
+/*
 package com.agilie.controller.animation.shape
 
 import android.graphics.BlurMaskFilter
 import android.graphics.Color
 import android.graphics.Paint
-import com.agilie.controller.animation.Painter
 
 
 class BackGroundCircle : Painter() {
@@ -100,3 +100,4 @@ class BackGroundCircle : Painter() {
 }
 
 
+*/
