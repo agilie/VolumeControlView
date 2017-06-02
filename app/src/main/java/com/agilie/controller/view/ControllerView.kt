@@ -1,16 +1,20 @@
 package com.agilie.controller.view
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import com.agilie.controller.R
 import com.agilie.controller.animation.controller.ControllerImpl
 import com.agilie.controller.animation.painter.InnerCircleImpl
+import com.agilie.controller.animation.painter.MainCircleImpl
 import com.agilie.controller.animation.painter.MovableCircleImpl
 import com.agilie.controller.animation.painter.SpiralPath
+
 
 class ControllerView : View, View.OnTouchListener {
 
@@ -60,8 +64,6 @@ class ControllerView : View, View.OnTouchListener {
     }
 
     private fun init() {
-        val bitmap = BitmapFactory.decodeResource(resources,
-                R.drawable.gradient_circle)
 
         setLayerType(ViewGroup.LAYER_TYPE_SOFTWARE, null)
         setWillNotDraw(false)
@@ -70,7 +72,7 @@ class ControllerView : View, View.OnTouchListener {
                 InnerCircleImpl(setInnerCirclePaint()),
                 MovableCircleImpl(setMovableCirclePaint()),
                 SpiralPath(Path(), setSpiralPathPaint()),
-                bitmap)
+                MainCircleImpl(setMainCirclePaint()))
     }
 
     private fun setInnerCirclePaint() = Paint().apply {
@@ -93,6 +95,25 @@ class ControllerView : View, View.OnTouchListener {
         style = Paint.Style.FILL
         strokeWidth = 2f
     }
+
+    private fun setMainCirclePaint(): Paint {
+        val colors = intArrayOf(
+                Color.parseColor("#6000FF"),
+                Color.parseColor("#C467FF"),
+                Color.parseColor("#FFB6C2"),
+                Color.parseColor("#E7FBE1"),
+                Color.parseColor("#53FFFF"))
+        val paint = Paint()
+        paint.apply {
+            strokeCap = Paint.Cap.SQUARE
+            strokeWidth = 1F
+            style = Paint.Style.FILL
+
+        }
+        return paint
+    }
+
+
 }
 
 

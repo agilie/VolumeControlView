@@ -4,10 +4,8 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PointF
-import com.agilie.controller.calculateAngleWithTwoVectors
-import com.agilie.controller.closestValue
+import android.util.Log
 import com.agilie.controller.getPointOnBorderLineOfCircle
-import com.agilie.controller.view.ControllerView
 
 class SpiralPath(val spiralPath: Path, val pathPaint: Paint) : Painter {
 
@@ -30,47 +28,42 @@ class SpiralPath(val spiralPath: Path, val pathPaint: Paint) : Painter {
         spiralPath.reset()
     }
 
-    fun onCreateSpiralPath() {
-        val point = getPointOnBorderLineOfCircle(center, radius, 0)
-        drawBigSpline(point)
+    fun onCreateSpiralPath(angle: Int, startAngle: Int) {
+        drawBigSpline(angle, startAngle)
     }
 
-    fun onDrawBigSpline(touchPointF: PointF) {
-        drawBigSpline(touchPointF)
+    fun onDrawBigSpline(angle: Int, startAngle: Int) {
+        drawBigSpline(angle, startAngle)
     }
 
-    private fun drawBigSpline(touchPointF: PointF) {
+    private fun drawBigSpline(angle: Int, startAngle: Int) {
 
-        val alfa = closestValue(calculateAngleWithTwoVectors(touchPointF, center), ControllerView.SECTOR_STEP)
-        val startPoint = getPointOnBorderLineOfCircle(innerCircleCenter, innerCircleRadius + 2, alfa)
-        val controlPoint2 = getPointOnBorderLineOfCircle(center, radius, alfa)
+        Log.d("SpiralPath360", angle.toString())
 
-        val radius = innerCircleRadius + distance * alfa
-        val controlPoint3 = getPointOnBorderLineOfCircle(center, radius, alfa)
+        val startPoint = getPointOnBorderLineOfCircle(innerCircleCenter, innerCircleRadius , angle)
+        val controlPoint2 = getPointOnBorderLineOfCircle(center, radius, angle)
+
+        val radius = innerCircleRadius + distance * angle
+        val controlPoint3 = getPointOnBorderLineOfCircle(center, radius, angle)
 
         spiralPath.moveTo(startPoint.x, startPoint.y)
         spiralPath.lineTo(controlPoint2.x, controlPoint2.y)
 
-        // Движение по внешней окружности до точки касания на внешней окружности
-        (alfa..360 + alfa step 6)
+        (angle..360 + angle step 6)
                 .map { getPointOnBorderLineOfCircle(center, this.radius + 5, it) }
                 .forEach { spiralPath.lineTo(it.x, it.y) }
         //Move to control point 3
         spiralPath.lineTo(controlPoint3.x, controlPoint3.y)
 
-
-        alfa.downTo(0).forEach {
+        angle.downTo(0).forEach {
             val radius = innerCircleRadius + distance * it
             val point = getPointOnBorderLineOfCircle(center, radius, it)
-            //Log.d("ControllerImpl", alfa.toString())
             spiralPath.lineTo(point.x, point.y)
         }
 
-        //Движение по внутренней окружности , предусмотреть возможность стыковке с точкой №1
-        var startAlfa = Math.round(calculateAngleWithTwoVectors(touchPointF, innerCircleCenter))
         for (i in 0..360 step 6) {
-            val point = getPointOnBorderLineOfCircle(innerCircleCenter, innerCircleRadius + 2, i)
-            if (i.toLong() == startAlfa) {
+            val point = getPointOnBorderLineOfCircle(innerCircleCenter, innerCircleRadius , i)
+            if (i == startAngle) {
                 spiralPath.lineTo(point.x, point.y)
             }
             spiralPath.lineTo(point.x, point.y)

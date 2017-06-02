@@ -1,7 +1,6 @@
 package com.agilie.controller
 
 import android.graphics.PointF
-import android.util.Log
 
 fun getPointOnBorderLineOfCircle(point: PointF?, radius: Float, alfa: Int = 0) =
         PointF().apply {
