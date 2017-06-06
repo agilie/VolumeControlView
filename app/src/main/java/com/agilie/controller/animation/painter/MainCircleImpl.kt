@@ -1,22 +1,17 @@
 package com.agilie.controller.animation.painter
 
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PointF
+import android.graphics.SweepGradient
 
-class MainCircleImpl(val paint: Paint) : Painter {
+class MainCircleImpl(val paint: Paint, val colors: IntArray) : Painter {
 
     var radius: Float = 0f
     var center = PointF()
 
-    val colors = intArrayOf(
-            Color.parseColor("#6000FF"),
-            Color.parseColor("#C467FF"),
-            Color.parseColor("#FFB6C2"),
-            Color.parseColor("#E7FBE1"),
-            Color.parseColor("#53FFFF"))
-
     override fun onDraw(canvas: Canvas) {
         paint.shader = SweepGradient(center.x, center.y, colors, null)
-
         canvas.drawCircle(center.x, center.y, radius, paint)
     }
 

@@ -13,7 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:hardwareAccelerated="false"
-
         tools:context="com.agilie.controller.ControllerActivity">
 
     </com.agilie.controller.view.ControllerView>

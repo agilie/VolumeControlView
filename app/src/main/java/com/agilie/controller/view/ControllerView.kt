@@ -5,15 +5,18 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import com.agilie.controller.R
 import com.agilie.controller.animation.controller.ControllerImpl
 import com.agilie.controller.animation.painter.InnerCircleImpl
 import com.agilie.controller.animation.painter.MainCircleImpl
 import com.agilie.controller.animation.painter.MovableCircleImpl
-import com.agilie.controller.animation.painter.SplinelPath
+import com.agilie.controller.animation.painter.SplinePath
 
 
 class ControllerView : View, View.OnTouchListener {
@@ -34,6 +37,16 @@ class ControllerView : View, View.OnTouchListener {
     }
 
     private var controller: ControllerImpl? = null
+    private var splineColor = Color.BLACK
+    private var movableCircleColor = Color.rgb(80, 254, 253)
+    private var innerCircleColor = Color.rgb(80, 254, 253)
+
+    var colors = intArrayOf(
+            Color.parseColor("#6000FF"),
+            Color.parseColor("#C467FF"),
+            Color.parseColor("#FFB6C2"),
+            Color.parseColor("#E7FBE1"),
+            Color.parseColor("#53FFFF"))
 
     constructor(context: Context) : super(context) {
         init(null)
@@ -49,10 +62,6 @@ class ControllerView : View, View.OnTouchListener {
         invalidate()
     }
 
-    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-
-    }
-
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         controller?.onSizeChanged(w, h)
         super.onSizeChanged(w, h, oldw, oldh)
@@ -63,11 +72,26 @@ class ControllerView : View, View.OnTouchListener {
         return true
     }
 
+    override fun onSaveInstanceState(): Parcelable {
+        val bundle = Bundle()
+        bundle.putParcelable("superState", super.onSaveInstanceState())
+        controller?.onSaveInstanceState(bundle)
+        return bundle
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable) {
+        val bundle = state as Bundle
+        controller?.onRestoreInstanceState(bundle)
+        super.onRestoreInstanceState(bundle.getParcelable<Parcelable>("superState"))
+    }
+
     private fun init(attrs: AttributeSet?) {
 
-
-
-        //val array =  a.getTextArray(R.styleable.ControllerView_controllerColor, controllerColor)
+        val a = context
+                .obtainStyledAttributes(attrs, R.styleable.ControllerView)
+        innerCircleColor = a.getColor(R.styleable.ControllerView_innerCircleColor, innerCircleColor)
+        movableCircleColor = a.getColor(R.styleable.ControllerView_movableCircleColor, movableCircleColor)
+        splineColor = a.getColor(R.styleable.ControllerView_splineCircleColor, splineColor)
 
         setLayerType(ViewGroup.LAYER_TYPE_SOFTWARE, null)
         setWillNotDraw(false)
@@ -75,45 +99,36 @@ class ControllerView : View, View.OnTouchListener {
         controller = ControllerImpl(
                 InnerCircleImpl(setInnerCirclePaint()),
                 MovableCircleImpl(setMovableCirclePaint()),
-                SplinelPath(Path(), setSpiralPathPaint()),
-                MainCircleImpl(setMainCirclePaint()))
+                SplinePath(Path(), setSplinePathPaint()),
+                MainCircleImpl(setMainCirclePaint(), colors))
     }
 
+
     private fun setInnerCirclePaint() = Paint().apply {
-        color = Color.rgb(80, 254, 253)
+        color = innerCircleColor
         isAntiAlias = true
         style = Paint.Style.STROKE
         strokeWidth = INNER_CIRCLE_STROKE_WIDTH
     }
 
     private fun setMovableCirclePaint() = Paint().apply {
-        color = Color.rgb(80, 254, 253)
+        color = movableCircleColor
         isAntiAlias = true
         style = Paint.Style.FILL
     }
 
-    private fun setSpiralPathPaint() = Paint().apply {
-        color = Color.BLACK
+    private fun setSplinePathPaint() = Paint().apply {
+        color = splineColor
         isAntiAlias = true
         style = Paint.Style.FILL
         strokeWidth = 2f
     }
 
-    private fun setMainCirclePaint(): Paint {
-        val colors = intArrayOf(
-                Color.parseColor("#6000FF"),
-                Color.parseColor("#C467FF"),
-                Color.parseColor("#FFB6C2"),
-                Color.parseColor("#E7FBE1"),
-                Color.parseColor("#53FFFF"))
-        val paint = Paint()
-        paint.apply {
-            strokeCap = Paint.Cap.SQUARE
-            strokeWidth = 1F
-            style = Paint.Style.FILL
+    private fun setMainCirclePaint() = Paint().apply {
+        strokeCap = Paint.Cap.SQUARE
+        strokeWidth = 1F
+        style = Paint.Style.FILL
 
-        }
-        return paint
     }
 
 }
