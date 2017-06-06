@@ -3,13 +3,13 @@ package com.agilie.controller.animation.controller
 import android.graphics.Canvas
 import android.graphics.PointF
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import com.agilie.controller.animation.painter.*
 import com.agilie.controller.calculateAngleWithTwoVectors
 import com.agilie.controller.closestValue
 import com.agilie.controller.getPointOnBorderLineOfCircle
 import com.agilie.controller.view.ControllerView
+import com.agilie.controller.view.ControllerView.Companion.CONTROLLER_SPACE
 import com.agilie.controller.view.ControllerView.Companion.INNER_CIRCLE_STROKE_WIDTH
 import java.util.*
 
@@ -91,8 +91,6 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         val moveToPoint = getPointOnBorderLineOfCircle(mainCenter, eventRadius, startAngle)
         val startPoint = getPointOnBorderLineOfCircle(mainCenter, eventRadius, getStartAngle(mainCenter))
 
-        // angleDelta %= 360
-
         if (previousAngle != currentAngle) {
             if (overlappedClockwise(direction, previousAngle, currentAngle)) {
                 angleDelta += (360 - previousAngle + currentAngle)
@@ -168,7 +166,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     }
 
     private fun setCircleRadius(w: Int, h: Int) {
-        mainRadius = if (w > h) h / 3f else w / 3f
+        mainRadius = if (w > h) h / CONTROLLER_SPACE else w / CONTROLLER_SPACE
         mainCircleImpl.radius = mainRadius
 
         innerCircleImpl.radius = mainRadius / 2

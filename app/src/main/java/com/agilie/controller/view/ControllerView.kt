@@ -23,7 +23,8 @@ class ControllerView : View, View.OnTouchListener {
 
     companion object {
         val INNER_CIRCLE_STROKE_WIDTH = 4f
-        val SECTOR_STEP = 6
+        var SECTOR_STEP = 6
+        var CONTROLLER_SPACE = 3f
         val LINE_LENGTH = 55f
         val FULL_CIRCLE = 360
         val CAPTURE_ANGLE = 10
@@ -54,6 +55,7 @@ class ControllerView : View, View.OnTouchListener {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(attrs)
+
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -92,6 +94,12 @@ class ControllerView : View, View.OnTouchListener {
         innerCircleColor = a.getColor(R.styleable.ControllerView_innerCircleColor, innerCircleColor)
         movableCircleColor = a.getColor(R.styleable.ControllerView_movableCircleColor, movableCircleColor)
         splineColor = a.getColor(R.styleable.ControllerView_splineCircleColor, splineColor)
+
+        val step = a.getInt(R.styleable.ControllerView_sectorRadius, SECTOR_STEP)
+        val controllerSpace = a.getFloat(R.styleable.ControllerView_controllerSpace, CONTROLLER_SPACE)
+
+        SECTOR_STEP = if (step > 0) step else SECTOR_STEP
+        CONTROLLER_SPACE = if (controllerSpace > 0) controllerSpace else CONTROLLER_SPACE
 
         setLayerType(ViewGroup.LAYER_TYPE_SOFTWARE, null)
         setWillNotDraw(false)

@@ -52,7 +52,7 @@ fun calculateAngleWithTwoVectors(touchX: Float, touchY: Float, centerX: Float, c
 fun closestValue(value: Double, closestValue: Int): Int {
     var j = (Math.round(value)).toInt()
     while (true) {
-        if (j > 0) {
+        if (j > 0 && closestValue > 0) {
             if (j % closestValue == 0)
                 return j
             else
