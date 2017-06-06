@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gradient">
+        <item>#6000FF</item>
+        <item>#C467FF</item>
+        <item>#FFB6C2</item>
+        <item>#E7FBE1</item>
+        <item>#53FFFF</item>
+    </string-array>
+</resources>
+

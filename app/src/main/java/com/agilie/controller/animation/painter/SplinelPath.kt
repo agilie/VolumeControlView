@@ -7,7 +7,7 @@ import android.graphics.PointF
 import android.util.Log
 import com.agilie.controller.getPointOnBorderLineOfCircle
 
-class SpiralPath(val spiralPath: Path, val pathPaint: Paint) : Painter {
+class SplinelPath(val spiralPath: Path, val pathPaint: Paint) : Painter {
 
     var spiralStartPoint: PointF? = null
     var center: PointF? = null

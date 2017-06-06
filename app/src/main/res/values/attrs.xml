@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ControllerView">
+
+        <attr name="innerCircleColor" format="color" />
+        <attr name="movableCircleColor" format="color" />
+        <attr name="controllerColor" format="reference" />
+        <attr name="controllerRadius" format="float" />
+
+
+    </declare-styleable>
+
+</resources>

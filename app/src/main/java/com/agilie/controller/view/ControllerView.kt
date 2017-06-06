@@ -13,7 +13,7 @@ import com.agilie.controller.animation.controller.ControllerImpl
 import com.agilie.controller.animation.painter.InnerCircleImpl
 import com.agilie.controller.animation.painter.MainCircleImpl
 import com.agilie.controller.animation.painter.MovableCircleImpl
-import com.agilie.controller.animation.painter.SpiralPath
+import com.agilie.controller.animation.painter.SplinelPath
 
 
 class ControllerView : View, View.OnTouchListener {
@@ -36,11 +36,11 @@ class ControllerView : View, View.OnTouchListener {
     private var controller: ControllerImpl? = null
 
     constructor(context: Context) : super(context) {
-        init()
+        init(null)
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init()
+        init(attrs)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -63,7 +63,11 @@ class ControllerView : View, View.OnTouchListener {
         return true
     }
 
-    private fun init() {
+    private fun init(attrs: AttributeSet?) {
+
+
+
+        //val array =  a.getTextArray(R.styleable.ControllerView_controllerColor, controllerColor)
 
         setLayerType(ViewGroup.LAYER_TYPE_SOFTWARE, null)
         setWillNotDraw(false)
@@ -71,7 +75,7 @@ class ControllerView : View, View.OnTouchListener {
         controller = ControllerImpl(
                 InnerCircleImpl(setInnerCirclePaint()),
                 MovableCircleImpl(setMovableCirclePaint()),
-                SpiralPath(Path(), setSpiralPathPaint()),
+                SplinelPath(Path(), setSpiralPathPaint()),
                 MainCircleImpl(setMainCirclePaint()))
     }
 
@@ -88,8 +92,7 @@ class ControllerView : View, View.OnTouchListener {
         style = Paint.Style.FILL
     }
 
-    private fun setSpiralPathPaint()
-            = Paint().apply {
+    private fun setSpiralPathPaint() = Paint().apply {
         color = Color.BLACK
         isAntiAlias = true
         style = Paint.Style.FILL
@@ -112,7 +115,6 @@ class ControllerView : View, View.OnTouchListener {
         }
         return paint
     }
-
 
 }
 
