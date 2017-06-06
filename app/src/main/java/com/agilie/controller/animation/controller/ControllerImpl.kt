@@ -1,23 +1,27 @@
 package com.agilie.controller.animation.controller
 
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.PointF
-import android.graphics.Rect
+import android.os.Bundle
 import android.view.MotionEvent
-import com.agilie.controller.animation.painter.InnerCircleImpl
-import com.agilie.controller.animation.painter.MovableCircleImpl
-import com.agilie.controller.animation.painter.SimpleLineImpl
-import com.agilie.controller.animation.painter.SpiralPath
+import com.agilie.controller.animation.painter.*
+import com.agilie.controller.calculateAngleWithTwoVectors
+import com.agilie.controller.closestValue
 import com.agilie.controller.getPointOnBorderLineOfCircle
 import com.agilie.controller.view.ControllerView
+import com.agilie.controller.view.ControllerView.Companion.CONTROLLER_SPACE
 import com.agilie.controller.view.ControllerView.Companion.INNER_CIRCLE_STROKE_WIDTH
 import java.util.*
 
 class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
                      val movableCircleImpl: MovableCircleImpl,
-                     val spiralPath: SpiralPath,
-                     val bitmap: Bitmap) : Controller {
+                     val splinePath: SplinePath,
+                     val mainCircleImpl: MainCircleImpl) : Controller {
+
+    interface OnTouchControllerListener {
+        fun onControllerDown(angle: Int)
+        fun onControllerMove(angle: Int)
+    }
 
     private var width = 0
     private var height = 0
@@ -25,13 +29,16 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     private var distance: Float = 0f
     private var mainCenter: PointF = PointF()
     private var mainRadius = 0f
+    private var currentTouchPoint: PointF = PointF()
     private var linesList = ArrayList<SimpleLineImpl>()
+
+    var onTouchControllerListener: OnTouchControllerListener? = null
 
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawBitmap(bitmap, null, getRect(), null)
+        mainCircleImpl.onDraw(canvas)
         linesList.forEach { it.onDraw(canvas) }
-        spiralPath.onDraw(canvas)
+        splinePath.onDraw(canvas)
         innerCircleImpl.onDraw(canvas)
         movableCircleImpl.onDraw(canvas)
     }
@@ -41,38 +48,105 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         this.height = h
         setCircleRadius(w, h)
         setCenterCoordinates(w, h)
-        createSpiralPath()
+        createSplinePath()
         initLines()
     }
 
     fun onTouchEvent(event: MotionEvent) {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                onAction(PointF(event.x, event.y))
+                onActionDown(PointF(event.x, event.y))
             }
             MotionEvent.ACTION_MOVE -> {
-                //if (event.eventTime - event.downTime > 200) {
-                onAction(PointF(event.x, event.y))
-                // }
+                onActionMove(PointF(event.x, event.y))
             }
             MotionEvent.ACTION_UP -> {
-                onActionUp(event)
             }
         }
     }
 
-    private fun onAction(touchPointF: PointF) {
-        movableCircleImpl.onActionMove(touchPointF, mainCenter, eventRadius)
-        spiralPath.onReset()
-        spiralPath.onDrawBigSpline(touchPointF)
+    private fun onActionDown(touchPointF: PointF) {
+        actionDownAngle = getClosestAngle(touchPointF)
+        currentTouchPoint = touchPointF
+        val startAngle = getStartAngle(touchPointF)
+        val point = getPointOnBorderLineOfCircle(mainCenter, eventRadius, startAngle)
+
+        previousAngle = actionDownAngle
+        direction = Direction.UNDEFINED
+        angleDelta = 0
+
+        onTouchControllerListener?.onControllerDown(actionDownAngle)
+
+        movableCircleImpl.onActionMove(point)
+        splinePath.onReset()
+        splinePath.onDrawBigSpline(actionDownAngle, startAngle)
     }
 
-    private fun onActionUp(event: MotionEvent) {
+    private var actionDownAngle: Int = 0
+    private var angleDelta = 0
 
+    private var previousAngle = 0
+    private var direction: Direction = Direction.UNDEFINED
+
+    enum class Direction {
+        UNDEFINED, CLOCKWISE, CCLOCKWISE
     }
 
-    private fun createSpiralPath() {
-        spiralPath.onCreateSpiralPath()
+
+    private fun onActionMove(touchPointF: PointF) {
+        var currentAngle = getClosestAngle(touchPointF)
+        val startAngle = getStartAngle(touchPointF)
+        val moveToPoint = getPointOnBorderLineOfCircle(mainCenter, eventRadius, startAngle)
+        val startPoint = getPointOnBorderLineOfCircle(mainCenter, eventRadius, getStartAngle(mainCenter))
+
+        if (previousAngle != currentAngle) {
+            if (overlappedClockwise(direction, previousAngle, currentAngle)) {
+                angleDelta += (360 - previousAngle + currentAngle)
+            } else if (overlappedCclockwise(direction, previousAngle, currentAngle)) {
+                angleDelta -= (360 - currentAngle + previousAngle)
+            } else if (previousAngle < currentAngle) {
+                direction = Direction.CLOCKWISE
+                angleDelta += (currentAngle - previousAngle)
+            } else {
+                direction = Direction.CCLOCKWISE
+                angleDelta -= (previousAngle - currentAngle)
+            }
+        }
+
+        val angle = Math.max(Math.min(actionDownAngle + angleDelta, 360), 0)
+
+        if (moveMovableCircle(angle)) {
+            movableCircleImpl.onActionMove(moveToPoint)
+            currentTouchPoint = moveToPoint
+        } else {
+            movableCircleImpl.onActionMove(startPoint)
+            currentTouchPoint = moveToPoint
+        }
+
+        onTouchControllerListener?.onControllerMove(angle)
+
+        splinePath.onReset()
+        splinePath.onDrawBigSpline(angle, startAngle)
+
+        previousAngle = currentAngle
+    }
+
+    private fun moveMovableCircle(angle: Int): Boolean {
+        if (angle == 360 || angle == 0) {
+            return false
+        }
+        return true
+    }
+
+    private var onRestore = false
+
+    private fun createSplinePath() {
+        if (onRestore) {
+            onActionDown(currentTouchPoint)
+        } else {
+            val startAngle = getStartAngle(mainCenter)
+            splinePath.onCreateSpiralPath(0, startAngle)
+        }
     }
 
     private fun setCenterCoordinates(w: Int, h: Int) {
@@ -87,38 +161,34 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
             y = mainCenter.y - eventRadius
         }
 
-        spiralPath.spiralStartPoint = getPointOnBorderLineOfCircle(mainCenter,
+        mainCircleImpl.center = mainCenter
+
+        splinePath.spiralStartPoint = getPointOnBorderLineOfCircle(mainCenter,
                 innerCircleImpl.radius + INNER_CIRCLE_STROKE_WIDTH, 0)
 
-        spiralPath.innerCircleCenter = innerCircleImpl.center
-        spiralPath.center = mainCenter
+        splinePath.innerCircleCenter = innerCircleImpl.center
+        splinePath.center = mainCenter
     }
 
     private fun setCircleRadius(w: Int, h: Int) {
-        mainRadius = if (w > h) h / 3f else w / 3f
+        mainRadius = if (w > h) h / CONTROLLER_SPACE else w / CONTROLLER_SPACE
+        mainCircleImpl.radius = mainRadius
 
         innerCircleImpl.radius = mainRadius / 2
         movableCircleImpl.radius = ControllerView.MOVABLE_CIRCLE_RADIUS
 
-        spiralPath.innerCircleRadius = innerCircleImpl.radius
-        spiralPath.radius = mainRadius
+        splinePath.innerCircleRadius = innerCircleImpl.radius
+        splinePath.radius = mainRadius
 
         eventRadius = innerCircleImpl.radius - movableCircleImpl.radius * 2
         distance = (mainRadius - innerCircleImpl.radius) / 360
 
-        spiralPath.distance = distance
+        splinePath.distance = distance
     }
-
-    private fun getRect() =
-            Rect((mainCenter.x - mainRadius).toInt(),
-                    ((mainCenter.y - mainRadius).toInt()),
-                    (mainCenter.x + mainRadius).toInt(),
-                    ((mainCenter.y + mainRadius).toInt()))
-
 
     private fun initLines() {
         for (i in 0..360 step ControllerView.SECTOR_STEP) {
-            val line = SimpleLineImpl(spiralPath.pathPaint)
+            val line = SimpleLineImpl(splinePath.pathPaint)
             line.startPoint = mainCenter
             val endPoint = getPointOnBorderLineOfCircle(mainCenter.x,
                     mainCenter.y, mainRadius, i.toDouble())
@@ -127,5 +197,25 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         }
     }
 
-}
+    private fun overlappedCclockwise(direction: Direction, previousAngle: Int, currentAngle: Int) = direction == Direction.CCLOCKWISE && (currentAngle - previousAngle) > 45
 
+    private fun overlappedClockwise(direction: Direction, previousAngle: Int, currentAngle: Int) = direction == Direction.CLOCKWISE && (previousAngle - currentAngle) > 45
+
+    private fun getClosestAngle(touchPointF: PointF) =
+            closestValue(calculateAngleWithTwoVectors(touchPointF, mainCenter), ControllerView.SECTOR_STEP)
+
+    private fun getStartAngle(touchPointF: PointF) =
+            (Math.round(calculateAngleWithTwoVectors(touchPointF, mainCenter))).toInt()
+
+    fun onSaveInstanceState(bundle: Bundle) {
+        bundle.putFloat("touchPointX", currentTouchPoint.x)
+        bundle.putFloat("touchPointY", currentTouchPoint.y)
+        bundle.putBoolean("onRestore", true)
+    }
+
+    fun onRestoreInstanceState(bundle: Bundle) {
+        currentTouchPoint.x = bundle.getFloat("touchPointX")
+        currentTouchPoint.y = bundle.getFloat("touchPointY")
+        onRestore = bundle.getBoolean("onRestore")
+    }
+}

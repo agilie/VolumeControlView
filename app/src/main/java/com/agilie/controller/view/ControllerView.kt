@@ -1,7 +1,12 @@
 package com.agilie.controller.view
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -9,14 +14,17 @@ import android.view.ViewGroup
 import com.agilie.controller.R
 import com.agilie.controller.animation.controller.ControllerImpl
 import com.agilie.controller.animation.painter.InnerCircleImpl
+import com.agilie.controller.animation.painter.MainCircleImpl
 import com.agilie.controller.animation.painter.MovableCircleImpl
-import com.agilie.controller.animation.painter.SpiralPath
+import com.agilie.controller.animation.painter.SplinePath
+
 
 class ControllerView : View, View.OnTouchListener {
 
     companion object {
         val INNER_CIRCLE_STROKE_WIDTH = 4f
-        val SECTOR_STEP = 6
+        var SECTOR_STEP = 6
+        var CONTROLLER_SPACE = 3f
         val LINE_LENGTH = 55f
         val FULL_CIRCLE = 360
         val CAPTURE_ANGLE = 10
@@ -29,24 +37,33 @@ class ControllerView : View, View.OnTouchListener {
         val MOVABLE_CIRCLE_RADIUS = 10f
     }
 
-    private var controller: ControllerImpl? = null
+    private var splineColor = Color.BLACK
+    private var movableCircleColor = Color.rgb(80, 254, 253)
+    private var innerCircleColor = Color.rgb(80, 254, 253)
+
+    var controller: ControllerImpl? = null
+    var colors = intArrayOf(
+            Color.parseColor("#0080ff"),
+            Color.parseColor("#6000FF"),
+            Color.parseColor("#0533FF"),
+            Color.parseColor("#C467FF"),
+            Color.parseColor("#FFB6C2"),
+            Color.parseColor("#E7FBE1"),
+            Color.parseColor("#53FFFF"),
+            Color.parseColor("#0080ff"))
 
     constructor(context: Context) : super(context) {
-        init()
+        init(null)
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init()
+        init(attrs)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         controller?.onDraw(canvas)
         invalidate()
-    }
-
-    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -59,9 +76,32 @@ class ControllerView : View, View.OnTouchListener {
         return true
     }
 
-    private fun init() {
-        val bitmap = BitmapFactory.decodeResource(resources,
-                R.drawable.gradient_circle)
+    override fun onSaveInstanceState(): Parcelable {
+        val bundle = Bundle()
+        bundle.putParcelable("superState", super.onSaveInstanceState())
+        controller?.onSaveInstanceState(bundle)
+        return bundle
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable) {
+        val bundle = state as Bundle
+        controller?.onRestoreInstanceState(bundle)
+        super.onRestoreInstanceState(bundle.getParcelable<Parcelable>("superState"))
+    }
+
+    private fun init(attrs: AttributeSet?) {
+
+        val attributes = context
+                .obtainStyledAttributes(attrs, R.styleable.ControllerView)
+        innerCircleColor = attributes.getColor(R.styleable.ControllerView_innerCircleColor, innerCircleColor)
+        movableCircleColor = attributes.getColor(R.styleable.ControllerView_movableCircleColor, movableCircleColor)
+        splineColor = attributes.getColor(R.styleable.ControllerView_splineCircleColor, splineColor)
+
+        val step = attributes.getInt(R.styleable.ControllerView_sectorRadius, SECTOR_STEP)
+        val controllerSpace = attributes.getFloat(R.styleable.ControllerView_controllerSpace, CONTROLLER_SPACE)
+
+        SECTOR_STEP = if (step > 0) step else SECTOR_STEP
+        CONTROLLER_SPACE = if (controllerSpace > 0) controllerSpace else CONTROLLER_SPACE
 
         setLayerType(ViewGroup.LAYER_TYPE_SOFTWARE, null)
         setWillNotDraw(false)
@@ -69,30 +109,38 @@ class ControllerView : View, View.OnTouchListener {
         controller = ControllerImpl(
                 InnerCircleImpl(setInnerCirclePaint()),
                 MovableCircleImpl(setMovableCirclePaint()),
-                SpiralPath(Path(), setSpiralPathPaint()),
-                bitmap)
+                SplinePath(Path(), setSplinePathPaint()),
+                MainCircleImpl(setMainCirclePaint(), colors))
     }
 
+
     private fun setInnerCirclePaint() = Paint().apply {
-        color = Color.rgb(80, 254, 253)
+        color = innerCircleColor
         isAntiAlias = true
         style = Paint.Style.STROKE
         strokeWidth = INNER_CIRCLE_STROKE_WIDTH
     }
 
     private fun setMovableCirclePaint() = Paint().apply {
-        color = Color.rgb(80, 254, 253)
+        color = movableCircleColor
         isAntiAlias = true
         style = Paint.Style.FILL
     }
 
-    private fun setSpiralPathPaint()
-            = Paint().apply {
-        color = Color.BLACK
+    private fun setSplinePathPaint() = Paint().apply {
+        color = splineColor
         isAntiAlias = true
         style = Paint.Style.FILL
         strokeWidth = 2f
     }
+
+    private fun setMainCirclePaint() = Paint().apply {
+        strokeCap = Paint.Cap.SQUARE
+        strokeWidth = 1F
+        style = Paint.Style.FILL
+
+    }
+
 }
 
 

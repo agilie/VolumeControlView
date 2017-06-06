@@ -4,7 +4,7 @@ import android.graphics.PointF
 
 interface MovableCircle : Painter {
 
-    fun onActionMove(pointF: PointF, center: PointF, eventRadius: Float)
+    fun onActionMove(mainCenter: PointF)
     fun onActionDown(pointF: PointF)
     fun onActionUp(pointF: PointF)
 }

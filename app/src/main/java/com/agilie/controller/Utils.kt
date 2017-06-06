@@ -1,7 +1,6 @@
 package com.agilie.controller
 
 import android.graphics.PointF
-import android.util.Log
 
 fun getPointOnBorderLineOfCircle(point: PointF?, radius: Float, alfa: Int = 0) =
         PointF().apply {
@@ -53,7 +52,7 @@ fun calculateAngleWithTwoVectors(touchX: Float, touchY: Float, centerX: Float, c
 fun closestValue(value: Double, closestValue: Int): Int {
     var j = (Math.round(value)).toInt()
     while (true) {
-        if (j > 0) {
+        if (j > 0 && closestValue > 0) {
             if (j % closestValue == 0)
                 return j
             else
