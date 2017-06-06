@@ -1,6 +1,7 @@
 package com.agilie.controller
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -19,7 +20,8 @@ class ControllerActivity : AppCompatActivity() {
 
         controller_view.controller?.onTouchControllerListener = (object : ControllerImpl.OnTouchControllerListener {
             override fun onControllerDown(angle: Int) {
-                Log.d("ControllerActivity", angle.toString())
+                controller_view.setBackgroundColors(Color.parseColor("#000000"), Color.GREEN)
+
             }
 
             override fun onControllerMove(angle: Int) {

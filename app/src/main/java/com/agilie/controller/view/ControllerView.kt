@@ -13,10 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.agilie.controller.R
 import com.agilie.controller.animation.controller.ControllerImpl
-import com.agilie.controller.animation.painter.InnerCircleImpl
-import com.agilie.controller.animation.painter.MainCircleImpl
-import com.agilie.controller.animation.painter.MovableCircleImpl
-import com.agilie.controller.animation.painter.SplinePath
+import com.agilie.controller.animation.painter.*
 
 
 class ControllerView : View, View.OnTouchListener {
@@ -52,6 +49,15 @@ class ControllerView : View, View.OnTouchListener {
             Color.parseColor("#53FFFF"),
             Color.parseColor("#0080ff"))
 
+    private var backgroundColors = intArrayOf(
+            Color.parseColor("#FF4081"),
+            Color.parseColor("#000000"))
+
+    private var backgroundColorsLine = intArrayOf(
+            Color.parseColor("#000000"),
+            Color.parseColor("#00000000"))
+
+
     constructor(context: Context) : super(context) {
         init(null)
     }
@@ -59,6 +65,15 @@ class ControllerView : View, View.OnTouchListener {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(attrs)
     }
+
+    fun setBackgroundColors(backgroundColor: Int, fillColor: Int) {
+        backgroundColors = intArrayOf(fillColor, backgroundColor)
+        backgroundColorsLine = intArrayOf(backgroundColor, Color.parseColor("#00000000"))
+
+        controller?.backgroundShiningImpl?.colors = backgroundColors
+        controller?.backgroundShiningImpl?.colors2 = backgroundColorsLine
+    }
+
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -110,7 +125,11 @@ class ControllerView : View, View.OnTouchListener {
                 InnerCircleImpl(setInnerCirclePaint()),
                 MovableCircleImpl(setMovableCirclePaint()),
                 SplinePath(Path(), setSplinePathPaint()),
-                MainCircleImpl(setMainCirclePaint(), colors))
+                MainCircleImpl(setMainCirclePaint(), colors),
+                BackgroundShiningImpl(setBackgroudShiningPaint(),
+                        setBackgroudShiningPaint(),
+                        backgroundColors,
+                        backgroundColorsLine))
     }
 
 
@@ -139,6 +158,12 @@ class ControllerView : View, View.OnTouchListener {
         strokeWidth = 1F
         style = Paint.Style.FILL
 
+    }
+
+    private fun setBackgroudShiningPaint() = Paint().apply {
+        /*        strokeCap = Paint.Cap.SQUARE
+                strokeWidth = 1F
+                style = Paint.Style.FILL*/
     }
 
 }

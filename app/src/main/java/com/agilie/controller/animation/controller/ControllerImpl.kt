@@ -16,7 +16,8 @@ import java.util.*
 class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
                      val movableCircleImpl: MovableCircleImpl,
                      val splinePath: SplinePath,
-                     val mainCircleImpl: MainCircleImpl) : Controller {
+                     val mainCircleImpl: MainCircleImpl,
+                     var backgroundShiningImpl: BackgroundShiningImpl) : Controller {
 
     interface OnTouchControllerListener {
         fun onControllerDown(angle: Int)
@@ -36,6 +37,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
 
     override fun onDraw(canvas: Canvas) {
+        backgroundShiningImpl.onDraw(canvas)
         mainCircleImpl.onDraw(canvas)
         linesList.forEach { it.onDraw(canvas) }
         splinePath.onDraw(canvas)
@@ -162,7 +164,9 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         }
 
         mainCircleImpl.center = mainCenter
-
+        //
+        backgroundShiningImpl.center = mainCenter
+        //
         splinePath.spiralStartPoint = getPointOnBorderLineOfCircle(mainCenter,
                 innerCircleImpl.radius + INNER_CIRCLE_STROKE_WIDTH, 0)
 
@@ -173,6 +177,10 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     private fun setCircleRadius(w: Int, h: Int) {
         mainRadius = if (w > h) h / CONTROLLER_SPACE else w / CONTROLLER_SPACE
         mainCircleImpl.radius = mainRadius
+
+        //
+        backgroundShiningImpl.radius = mainRadius
+        //
 
         innerCircleImpl.radius = mainRadius / 2
         movableCircleImpl.radius = ControllerView.MOVABLE_CIRCLE_RADIUS
