@@ -24,9 +24,6 @@ class MovableCircleImpl(val paint: Paint) : MovableCircle {
     }
 
     override fun onActionMove(point: PointF) {
-        //val alfa = calculateAngleWithTwoVectors(touchPointF, pointF)
-
-        //val point = getPointOnBorderLineOfCircle(mainCenter, eventRadius, angle)
         center.apply {
             x = point.x
             y = point.y

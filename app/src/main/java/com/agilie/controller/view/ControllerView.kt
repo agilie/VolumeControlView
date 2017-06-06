@@ -37,17 +37,20 @@ class ControllerView : View, View.OnTouchListener {
         val MOVABLE_CIRCLE_RADIUS = 10f
     }
 
-    private var controller: ControllerImpl? = null
     private var splineColor = Color.BLACK
     private var movableCircleColor = Color.rgb(80, 254, 253)
     private var innerCircleColor = Color.rgb(80, 254, 253)
 
+    var controller: ControllerImpl? = null
     var colors = intArrayOf(
+            Color.parseColor("#0080ff"),
             Color.parseColor("#6000FF"),
+            Color.parseColor("#0533FF"),
             Color.parseColor("#C467FF"),
             Color.parseColor("#FFB6C2"),
             Color.parseColor("#E7FBE1"),
-            Color.parseColor("#53FFFF"))
+            Color.parseColor("#53FFFF"),
+            Color.parseColor("#0080ff"))
 
     constructor(context: Context) : super(context) {
         init(null)
@@ -55,7 +58,6 @@ class ControllerView : View, View.OnTouchListener {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(attrs)
-
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -89,14 +91,14 @@ class ControllerView : View, View.OnTouchListener {
 
     private fun init(attrs: AttributeSet?) {
 
-        val a = context
+        val attributes = context
                 .obtainStyledAttributes(attrs, R.styleable.ControllerView)
-        innerCircleColor = a.getColor(R.styleable.ControllerView_innerCircleColor, innerCircleColor)
-        movableCircleColor = a.getColor(R.styleable.ControllerView_movableCircleColor, movableCircleColor)
-        splineColor = a.getColor(R.styleable.ControllerView_splineCircleColor, splineColor)
+        innerCircleColor = attributes.getColor(R.styleable.ControllerView_innerCircleColor, innerCircleColor)
+        movableCircleColor = attributes.getColor(R.styleable.ControllerView_movableCircleColor, movableCircleColor)
+        splineColor = attributes.getColor(R.styleable.ControllerView_splineCircleColor, splineColor)
 
-        val step = a.getInt(R.styleable.ControllerView_sectorRadius, SECTOR_STEP)
-        val controllerSpace = a.getFloat(R.styleable.ControllerView_controllerSpace, CONTROLLER_SPACE)
+        val step = attributes.getInt(R.styleable.ControllerView_sectorRadius, SECTOR_STEP)
+        val controllerSpace = attributes.getFloat(R.styleable.ControllerView_controllerSpace, CONTROLLER_SPACE)
 
         SECTOR_STEP = if (step > 0) step else SECTOR_STEP
         CONTROLLER_SPACE = if (controllerSpace > 0) controllerSpace else CONTROLLER_SPACE

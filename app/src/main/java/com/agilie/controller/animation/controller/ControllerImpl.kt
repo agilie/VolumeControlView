@@ -18,6 +18,11 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
                      val splinePath: SplinePath,
                      val mainCircleImpl: MainCircleImpl) : Controller {
 
+    interface OnTouchControllerListener {
+        fun onControllerDown(angle: Int)
+        fun onControllerMove(angle: Int)
+    }
+
     private var width = 0
     private var height = 0
     private var eventRadius: Float = 0f
@@ -26,6 +31,8 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     private var mainRadius = 0f
     private var currentTouchPoint: PointF = PointF()
     private var linesList = ArrayList<SimpleLineImpl>()
+
+    var onTouchControllerListener: OnTouchControllerListener? = null
 
 
     override fun onDraw(canvas: Canvas) {
@@ -54,7 +61,6 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
                 onActionMove(PointF(event.x, event.y))
             }
             MotionEvent.ACTION_UP -> {
-                onActionUp(event)
             }
         }
     }
@@ -68,6 +74,8 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         previousAngle = actionDownAngle
         direction = Direction.UNDEFINED
         angleDelta = 0
+
+        onTouchControllerListener?.onControllerDown(actionDownAngle)
 
         movableCircleImpl.onActionMove(point)
         splinePath.onReset()
@@ -115,15 +123,12 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
             currentTouchPoint = moveToPoint
         }
 
+        onTouchControllerListener?.onControllerMove(angle)
+
         splinePath.onReset()
         splinePath.onDrawBigSpline(angle, startAngle)
 
         previousAngle = currentAngle
-    }
-
-
-    private fun onActionUp(event: MotionEvent) {
-
     }
 
     private fun moveMovableCircle(angle: Int): Boolean {

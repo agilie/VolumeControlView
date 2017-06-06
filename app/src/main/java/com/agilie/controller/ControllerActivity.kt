@@ -3,6 +3,9 @@ package com.agilie.controller
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import com.agilie.controller.animation.controller.ControllerImpl
+import kotlinx.android.synthetic.main.activity_controller.*
 
 class ControllerActivity : AppCompatActivity() {
 
@@ -14,18 +17,15 @@ class ControllerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_controller)
 
-       /* controller_view.controller?.controllerListener = (object : ControllerImp.ControllerMoveListener {
-            override fun onMove(value: Double) {
-                Log.d("ControllerActivity", "onMove = " + value)
+        controller_view.controller?.onTouchControllerListener = (object : ControllerImpl.OnTouchControllerListener {
+            override fun onControllerDown(angle: Int) {
+                Log.d("ControllerActivity", angle.toString())
             }
 
-            override fun onStartMove(start: Boolean) {
-                Log.d("ControllerActivity", "onStart = " + start)
+            override fun onControllerMove(angle: Int) {
+                Log.d("ControllerActivity", angle.toString())
             }
+        })
 
-            override fun onStopMove(stop: Boolean) {
-                Log.d("ControllerActivity", "onStop = " + stop)
-            }
-        })*/
     }
 }
