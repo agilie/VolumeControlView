@@ -22,6 +22,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     interface OnTouchControllerListener {
         fun onControllerDown(angle: Int)
         fun onControllerMove(angle: Int)
+        fun onAngleChange(angle: Int)
     }
 
     private var width = 0
@@ -80,6 +81,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         angleDelta = 0
 
         onTouchControllerListener?.onControllerDown(actionDownAngle)
+        onTouchControllerListener?.onAngleChange(actionDownAngle)
         //backgroundShiningImpl.setLinearGradient(actionDownAngle.toDouble())
         //backgroundShiningImpl.gradientAngle = actionDownAngle
 
@@ -131,6 +133,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         }
 
         onTouchControllerListener?.onControllerMove(angle)
+        onTouchControllerListener?.onAngleChange(angle)
 
         splinePath.onReset()
         splinePath.onDrawBigSpline(angle, startAngle)

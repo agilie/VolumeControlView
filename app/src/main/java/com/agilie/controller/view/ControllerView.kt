@@ -30,6 +30,7 @@ class ControllerView : View, View.OnTouchListener {
         val MOVABLE_CIRCLE_RADIUS = 10f
     }
 
+    var backgroundLayoutColor = Color.parseColor("#e3e4e5")
     private var splineColor = Color.BLACK
     private var movableCircleColor = Color.rgb(80, 254, 253)
     private var innerCircleColor = Color.rgb(80, 254, 253)
@@ -62,7 +63,7 @@ class ControllerView : View, View.OnTouchListener {
         init(attrs)
     }
 
-    fun setBackgroundColors(backgroundColor: Int, fillColor: Int) {
+    fun setBackgroundShiningColor(fillColor: Int, backgroundColor: Int = backgroundLayoutColor) {
         backgroundColors = intArrayOf(fillColor, backgroundColor)
         backgroundColorsLine = intArrayOf(backgroundColor, Color.parseColor("#00000000"))
 
