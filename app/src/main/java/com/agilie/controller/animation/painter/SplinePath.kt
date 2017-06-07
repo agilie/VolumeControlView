@@ -28,8 +28,8 @@ class SplinePath(val spiralPath: Path, val pathPaint: Paint) : Painter {
         spiralPath.reset()
     }
 
-    fun onCreateSpiralPath(angle: Int, startAngle: Int) {
-        drawBigSpline(angle, startAngle)
+    fun onCreateSpiralPath(drawToAngle: Int, startAngle: Int) {
+        drawBigSpline(drawToAngle, startAngle)
     }
 
     fun onDrawBigSpline(angle: Int, startAngle: Int) {

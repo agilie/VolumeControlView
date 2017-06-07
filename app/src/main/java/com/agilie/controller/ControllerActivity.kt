@@ -17,8 +17,8 @@ class ControllerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_controller)
 
-        controller_view.backgroundLayoutColor = Color.parseColor("#000000")
-        controller_view.controller?.onTouchControllerListener = (object : ControllerImpl.OnTouchControllerListener {
+        controllerView.backgroundLayoutColor = Color.parseColor("#000000")
+        controllerView.controller?.onTouchControllerListener = (object : ControllerImpl.OnTouchControllerListener {
             override fun onControllerDown(angle: Int) {
 
 
@@ -30,12 +30,12 @@ class ControllerActivity : AppCompatActivity() {
 
             override fun onAngleChange(angle: Int) {
                 when (angle) {
-                    in 0..60 -> controller_view.setBackgroundShiningColor(Color.GREEN)
-                    in 61..120 -> controller_view.setBackgroundShiningColor(Color.YELLOW)
-                    in 121..180 -> controller_view.setBackgroundShiningColor(Color.WHITE)
-                    in 181..240 -> controller_view.setBackgroundShiningColor(Color.RED)
-                    in 241..300 -> controller_view.setBackgroundShiningColor(Color.MAGENTA)
-                    in 301..360 -> controller_view.setBackgroundShiningColor(Color.BLUE)
+                    in 0..60 -> controllerView.setBackgroundShiningColor(Color.GREEN)
+                    in 61..120 -> controllerView.setBackgroundShiningColor(Color.YELLOW)
+                    in 121..180 -> controllerView.setBackgroundShiningColor(Color.WHITE)
+                    in 181..240 -> controllerView.setBackgroundShiningColor(Color.RED)
+                    in 241..300 -> controllerView.setBackgroundShiningColor(Color.MAGENTA)
+                    in 301..360 -> controllerView.setBackgroundShiningColor(Color.BLUE)
                 }
             }
         })

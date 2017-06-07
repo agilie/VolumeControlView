@@ -22,15 +22,10 @@ class ControllerView : View, View.OnTouchListener {
         val INNER_CIRCLE_STROKE_WIDTH = 4f
         var SECTOR_STEP = 6
         var CONTROLLER_SPACE = 3f
-        val MAX_FACTOR = 1.5f
-        val DELTA_TIME = 0.04
-        val INCREASE_FACTOR = 3.0
-        val DECREASE_FACTOR = 3.0
-        val MIN_FACTOR = 1.3f
-        val MOVABLE_CIRCLE_RADIUS = 10f
+        var MOVABLE_CIRCLE_RADIUS = 10f
     }
 
-    var backgroundLayoutColor = Color.parseColor("#e3e4e5")
+    var backgroundLayoutColor = Color.parseColor("#E3E4E5")
     private var splineColor = Color.BLACK
     private var movableCircleColor = Color.rgb(80, 254, 253)
     private var innerCircleColor = Color.rgb(80, 254, 253)
@@ -56,11 +51,13 @@ class ControllerView : View, View.OnTouchListener {
 
 
     constructor(context: Context) : super(context) {
-        init(null)
+        initAttrs(null)
+        initController()
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(attrs)
+        initAttrs(attrs)
+        initController()
     }
 
     fun setBackgroundShiningColor(fillColor: Int, backgroundColor: Int = backgroundLayoutColor) {
@@ -71,6 +68,9 @@ class ControllerView : View, View.OnTouchListener {
         controller?.backgroundShiningImpl?.colors2 = backgroundColorsLine
     }
 
+    fun setBackgroundShiningAttrs(minRadius: Float, maxRadius: Float, step: Float) {
+        controller?.backgroundShiningImpl?.onSetShiningAttrs(minRadius, maxRadius, step)
+    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -101,7 +101,7 @@ class ControllerView : View, View.OnTouchListener {
         super.onRestoreInstanceState(bundle.getParcelable<Parcelable>("superState"))
     }
 
-    private fun init(attrs: AttributeSet?) {
+    private fun initAttrs(attrs: AttributeSet?) {
 
         val attributes = context
                 .obtainStyledAttributes(attrs, R.styleable.ControllerView)
@@ -111,20 +111,26 @@ class ControllerView : View, View.OnTouchListener {
 
         val step = attributes.getInt(R.styleable.ControllerView_sectorRadius, SECTOR_STEP)
         val controllerSpace = attributes.getFloat(R.styleable.ControllerView_controllerSpace, CONTROLLER_SPACE)
+        val movableCircleRadius = attributes.getFloat(R.styleable.ControllerView_movableCircleRadius, MOVABLE_CIRCLE_RADIUS)
 
+        //Checks start values
         SECTOR_STEP = if (step > 0) step else SECTOR_STEP
         CONTROLLER_SPACE = if (controllerSpace > 0) controllerSpace else CONTROLLER_SPACE
+        MOVABLE_CIRCLE_RADIUS = if (movableCircleRadius > 0) movableCircleRadius else MOVABLE_CIRCLE_RADIUS
 
         setLayerType(ViewGroup.LAYER_TYPE_SOFTWARE, null)
         setWillNotDraw(false)
         setOnTouchListener(this)
+    }
+
+    private fun initController() {
         controller = ControllerImpl(
                 InnerCircleImpl(setInnerCirclePaint()),
                 MovableCircleImpl(setMovableCirclePaint()),
                 SplinePath(Path(), setSplinePathPaint()),
                 MainCircleImpl(setMainCirclePaint(), colors),
-                BackgroundShiningImpl(setBackgroudShiningPaint(),
-                        setBackgroudShiningPaint(),
+                BackgroundShiningImpl(Paint(),
+                        Paint(),
                         backgroundColors,
                         backgroundColorsLine))
     }
@@ -155,12 +161,6 @@ class ControllerView : View, View.OnTouchListener {
         strokeWidth = 1F
         style = Paint.Style.FILL
 
-    }
-
-    private fun setBackgroudShiningPaint() = Paint().apply {
-        /*        strokeCap = Paint.Cap.SQUARE
-                strokeWidth = 1F
-                style = Paint.Style.FILL*/
     }
 
 }

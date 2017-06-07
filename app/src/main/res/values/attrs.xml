@@ -8,6 +8,8 @@
         <attr name="splineCircleColor" format="color" />
         <attr name="controllerSpace" format="float" />
         <attr name="sectorRadius" format="integer" />
+        <attr name="movableCircleRadius" format="float" />
+
     </declare-styleable>
 
 </resources>

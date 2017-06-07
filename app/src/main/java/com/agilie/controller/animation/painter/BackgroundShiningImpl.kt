@@ -1,23 +1,25 @@
 package com.agilie.controller.animation.painter
 
 import android.graphics.*
-import android.util.Log
 import com.agilie.controller.getPointOnBorderLineOfCircle
-import com.agilie.controller.view.ControllerView.Companion.DECREASE_FACTOR
-import com.agilie.controller.view.ControllerView.Companion.DELTA_TIME
-import com.agilie.controller.view.ControllerView.Companion.INCREASE_FACTOR
-import com.agilie.controller.view.ControllerView.Companion.MAX_FACTOR
-import com.agilie.controller.view.ControllerView.Companion.MIN_FACTOR
 
 class BackgroundShiningImpl(val paint: Paint,
                             val paint2: Paint,
                             var colors: IntArray,
                             var colors2: IntArray) : Painter {
 
+    private var incrementer: Incrementer? = null
+
+    init {
+        incrementer = Incrementer()
+        incrementer?.start()
+    }
 
     @Volatile
-    private var factor = 1.3f
-    private val incrementer = Incrementer()
+    private var currentSplash = 1.3f
+    private var minShiningRadius = 1.3f
+    private var maxShiningRadius = 1.5f
+    private var shiningStep = 0.004f
     var radius: Float = 0f
     var center = PointF()
     var gradientAngle = 0
@@ -25,7 +27,7 @@ class BackgroundShiningImpl(val paint: Paint,
 
     override fun onDraw(canvas: Canvas) {
 
-        paint.shader = RadialGradient(center.x, center.y, radius * factor, colors,
+        paint.shader = RadialGradient(center.x, center.y, radius * currentSplash, colors,
                 floatArrayOf(0.01F, 0.99F), Shader.TileMode.CLAMP)
 
         val startPoint = getPointOnBorderLineOfCircle(center, radius, gradientAngle + 180)
@@ -35,26 +37,24 @@ class BackgroundShiningImpl(val paint: Paint,
                 null,
                 Shader.TileMode.CLAMP)
 
-        canvas.drawCircle(center.x, center.y, radius * factor, paint)
-        canvas.drawCircle(center.x, center.y, radius * factor, paint2)
+        canvas.drawCircle(center.x, center.y, radius * currentSplash, paint)
+        canvas.drawCircle(center.x, center.y, radius * currentSplash, paint2)
 
     }
 
     override fun onSizeChanged(w: Int, h: Int) {
-        incrementer.start()
     }
 
     inner class Incrementer : Thread() {
 
         @Volatile
         private var isIncrement = true
-        private var time = 0.0
+        private var time = 0f
 
         override fun run() {
 
             do {
                 sleep(16)
-                Log.d("Incrementer", "--------------------------------------------------------------")
                 when (isIncrement) {
                     true -> onIncrement()
                     false -> onDecrement()
@@ -64,26 +64,30 @@ class BackgroundShiningImpl(val paint: Paint,
         }
 
         private fun onDecrement() {
-            if (factor >= MIN_FACTOR) {
-                time += DELTA_TIME
-                factor -= Math.pow(time, DECREASE_FACTOR).toFloat()
-                Log.d("Incrementer", " Decrement factor= " + factor)
+            if (currentSplash >= minShiningRadius) {
+                time += shiningStep
+                currentSplash -= time
             } else {
-                time = 0.0
+                time = 0f
                 isIncrement = true
             }
         }
 
         private fun onIncrement() {
-            if (factor <= MAX_FACTOR) {
-                factor += Math.pow(time, INCREASE_FACTOR).toFloat()
-                time += DELTA_TIME
-                Log.d("Incrementer", "Increment factor= " + factor)
+            if (currentSplash <= maxShiningRadius) {
+                currentSplash += time
+                time += shiningStep
             } else {
-                time = 0.0
+                time = 0f
                 isIncrement = false
             }
         }
+    }
+
+    fun onSetShiningAttrs(minRadius: Float, maxRadius: Float, step: Float) {
+        minShiningRadius = minRadius
+        maxShiningRadius = maxRadius
+        shiningStep = step
     }
 
 }

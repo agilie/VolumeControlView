@@ -36,7 +36,6 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
     var onTouchControllerListener: OnTouchControllerListener? = null
 
-
     override fun onDraw(canvas: Canvas) {
 
         backgroundShiningImpl.onDraw(canvas)
@@ -54,7 +53,6 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         setCenterCoordinates(w, h)
         createSplinePath()
         initLines()
-        backgroundShiningImpl.onSizeChanged(w, h)
     }
 
     fun onTouchEvent(event: MotionEvent) {
@@ -82,10 +80,9 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
         onTouchControllerListener?.onControllerDown(actionDownAngle)
         onTouchControllerListener?.onAngleChange(actionDownAngle)
-        //backgroundShiningImpl.setLinearGradient(actionDownAngle.toDouble())
-        //backgroundShiningImpl.gradientAngle = actionDownAngle
 
         movableCircleImpl.onActionMove(point)
+        backgroundShiningImpl.gradientAngle = actionDownAngle
         splinePath.onReset()
         splinePath.onDrawBigSpline(actionDownAngle, startAngle)
     }
@@ -99,7 +96,6 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     enum class Direction {
         UNDEFINED, CLOCKWISE, CCLOCKWISE
     }
-
 
     private fun onActionMove(touchPointF: PointF) {
         var currentAngle = getClosestAngle(touchPointF)
@@ -138,9 +134,6 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         splinePath.onReset()
         splinePath.onDrawBigSpline(angle, startAngle)
 
-
-        //backgroundShiningImpl.setLinearGradient(currentAngle.toDouble())
-
         previousAngle = currentAngle
     }
 
@@ -157,8 +150,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         if (onRestore) {
             onActionDown(currentTouchPoint)
         } else {
-            val startAngle = getStartAngle(mainCenter)
-            splinePath.onCreateSpiralPath(0, startAngle)
+            splinePath.onCreateSpiralPath(drawToAngle = 0, startAngle = 0)
         }
     }
 
@@ -175,9 +167,8 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         }
 
         mainCircleImpl.center = mainCenter
-        //
         backgroundShiningImpl.center = mainCenter
-        //
+
         splinePath.spiralStartPoint = getPointOnBorderLineOfCircle(mainCenter,
                 innerCircleImpl.radius + INNER_CIRCLE_STROKE_WIDTH, 0)
 
@@ -189,9 +180,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         mainRadius = if (w > h) h / CONTROLLER_SPACE else w / CONTROLLER_SPACE
         mainCircleImpl.radius = mainRadius
 
-        //
         backgroundShiningImpl.radius = mainRadius
-        //
 
         innerCircleImpl.radius = mainRadius / 2
         movableCircleImpl.radius = ControllerView.MOVABLE_CIRCLE_RADIUS
