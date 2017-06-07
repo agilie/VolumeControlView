@@ -30,12 +30,14 @@ class ControllerActivity : AppCompatActivity() {
 
             override fun onAngleChange(angle: Int) {
                 when (angle) {
-                    in 0..60 -> controller_view.setBackgroundShiningColor(Color.GREEN)
-                    in 61..120 -> controller_view.setBackgroundShiningColor(Color.YELLOW)
-                    in 121..180 -> controller_view.setBackgroundShiningColor(Color.WHITE)
-                    in 181..240 -> controller_view.setBackgroundShiningColor(Color.RED)
-                    in 241..300 -> controller_view.setBackgroundShiningColor(Color.MAGENTA)
-                    in 301..360 -> controller_view.setBackgroundShiningColor(Color.BLUE)
+                    in 0..45 -> controller_view.setBackgroundShiningColor(Color.parseColor("#FF7F00"))
+                    in 46..90 -> controller_view.setBackgroundShiningColor(Color.parseColor("#9FFF00"))
+                    in 91..135 -> controller_view.setBackgroundShiningColor(Color.parseColor("#FACC00"))
+                    in 136..180 -> controller_view.setBackgroundShiningColor(Color.parseColor("#3B9800"))
+                    in 181..225 -> controller_view.setBackgroundShiningColor(Color.parseColor("#00493D"))
+                    in 226..270 -> controller_view.setBackgroundShiningColor(Color.parseColor("#E7FBE1"))
+                    in 271..315 -> controller_view.setBackgroundShiningColor(Color.parseColor("#53FFFF"))
+                    in 316..360 -> controller_view.setBackgroundShiningColor(Color.parseColor("#FF7F00"))
                 }
             }
         })
