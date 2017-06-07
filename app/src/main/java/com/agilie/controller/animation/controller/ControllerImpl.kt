@@ -3,6 +3,7 @@ package com.agilie.controller.animation.controller
 import android.graphics.Canvas
 import android.graphics.PointF
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import com.agilie.controller.animation.painter.*
 import com.agilie.controller.calculateAngleWithTwoVectors
@@ -31,7 +32,6 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     private var distance: Float = 0f
     private var mainCenter: PointF = PointF()
     private var mainRadius = 0f
-    private var currentTouchPoint: PointF = PointF()
     private var linesList = ArrayList<SimpleLineImpl>()
 
     var onTouchControllerListener: OnTouchControllerListener? = null
@@ -70,7 +70,6 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
     private fun onActionDown(touchPointF: PointF) {
         actionDownAngle = getClosestAngle(touchPointF)
-        currentTouchPoint = touchPointF
         val startAngle = getStartAngle(touchPointF)
         val point = getPointOnBorderLineOfCircle(mainCenter, eventRadius, startAngle)
 
@@ -121,11 +120,9 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
         if (moveMovableCircle(angle)) {
             movableCircleImpl.onActionMove(moveToPoint)
-            currentTouchPoint = moveToPoint
             backgroundShiningImpl.gradientAngle = currentAngle
         } else {
             movableCircleImpl.onActionMove(startPoint)
-            currentTouchPoint = moveToPoint
         }
 
         onTouchControllerListener?.onControllerMove(angle)
@@ -148,7 +145,9 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
     private fun createSplinePath() {
         if (onRestore) {
-            onActionDown(currentTouchPoint)
+            Log.d("Restore", "-----------------------------------------------------------")
+            val restoreTouchPoint = getPointOnBorderLineOfCircle(mainCenter, mainRadius, previousAngle)
+            onActionDown(restoreTouchPoint)
         } else {
             splinePath.onCreateSpiralPath(drawToAngle = 0, startAngle = 0)
         }
@@ -159,6 +158,8 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
             x = w / 2f
             y = h / 2f
         }
+
+        Log.d("Restore", "center " + mainCenter.toString())
 
         innerCircleImpl.center = mainCenter
         movableCircleImpl.center.apply {
@@ -216,14 +217,12 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
             (Math.round(calculateAngleWithTwoVectors(touchPointF, mainCenter))).toInt()
 
     fun onSaveInstanceState(bundle: Bundle) {
-        bundle.putFloat("touchPointX", currentTouchPoint.x)
-        bundle.putFloat("touchPointY", currentTouchPoint.y)
+        bundle.putInt("previousAngle", previousAngle)
         bundle.putBoolean("onRestore", true)
     }
 
     fun onRestoreInstanceState(bundle: Bundle) {
-        currentTouchPoint.x = bundle.getFloat("touchPointX")
-        currentTouchPoint.y = bundle.getFloat("touchPointY")
+        previousAngle = bundle.getInt("previousAngle")
         onRestore = bundle.getBoolean("onRestore")
     }
 }
