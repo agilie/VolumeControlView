@@ -23,9 +23,9 @@ class ControllerView : View, View.OnTouchListener {
         var SECTOR_STEP = 6
         var CONTROLLER_SPACE = 3f
         val MAX_FACTOR = 1.5f
-        val DELTA_TIME = 0.09
-        val INCREASE_FACTOR = 6.0
-        val DECREASE_FACTOR = 6.0
+        val DELTA_TIME = 0.04
+        val INCREASE_FACTOR = 3.0
+        val DECREASE_FACTOR = 3.0
         val MIN_FACTOR = 1.3f
         val MOVABLE_CIRCLE_RADIUS = 10f
     }

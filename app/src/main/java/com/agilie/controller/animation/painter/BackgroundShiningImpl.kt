@@ -51,9 +51,10 @@ class BackgroundShiningImpl(val paint: Paint,
         private var time = 0.0
 
         override fun run() {
+
             do {
                 sleep(16)
-
+                Log.d("Incrementer", "--------------------------------------------------------------")
                 when (isIncrement) {
                     true -> onIncrement()
                     false -> onDecrement()
@@ -66,6 +67,7 @@ class BackgroundShiningImpl(val paint: Paint,
             if (factor >= MIN_FACTOR) {
                 time += DELTA_TIME
                 factor -= Math.pow(time, DECREASE_FACTOR).toFloat()
+                Log.d("Incrementer", " Decrement factor= " + factor)
             } else {
                 time = 0.0
                 isIncrement = true
@@ -76,7 +78,7 @@ class BackgroundShiningImpl(val paint: Paint,
             if (factor <= MAX_FACTOR) {
                 factor += Math.pow(time, INCREASE_FACTOR).toFloat()
                 time += DELTA_TIME
-                Log.d("Incrementer", "factor ")
+                Log.d("Incrementer", "Increment factor= " + factor)
             } else {
                 time = 0.0
                 isIncrement = false

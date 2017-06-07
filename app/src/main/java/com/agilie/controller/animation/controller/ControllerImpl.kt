@@ -53,6 +53,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         setCenterCoordinates(w, h)
         createSplinePath()
         initLines()
+        backgroundShiningImpl.onSizeChanged(w, h)
     }
 
     fun onTouchEvent(event: MotionEvent) {
