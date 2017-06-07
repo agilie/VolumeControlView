@@ -4,10 +4,9 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PointF
-import android.util.Log
 import com.agilie.controller.getPointOnBorderLineOfCircle
 
-class SplinePath(val spiralPath: Path, val pathPaint: Paint) : Painter {
+class SplinePath(val splinePath: Path, val splinePaint: Paint) : Painter {
 
     var spiralStartPoint: PointF? = null
     var center: PointF? = null
@@ -16,16 +15,15 @@ class SplinePath(val spiralPath: Path, val pathPaint: Paint) : Painter {
     var innerCircleRadius = 0f
     var distance = 0f
 
-
     override fun onDraw(canvas: Canvas) {
-        canvas.drawPath(spiralPath, pathPaint)
+        canvas.drawPath(splinePath, splinePaint)
     }
 
     override fun onSizeChanged(w: Int, h: Int) {
     }
 
     fun onReset() {
-        spiralPath.reset()
+        splinePath.reset()
     }
 
     fun onCreateSpiralPath(drawToAngle: Int, startAngle: Int) {
@@ -36,39 +34,43 @@ class SplinePath(val spiralPath: Path, val pathPaint: Paint) : Painter {
         drawBigSpline(angle, startAngle)
     }
 
+    /** Our custom spline consists of line path.
+     *In order to correctly draw a spline it is necessary to pass four control points.
+    From the starting point, which is a point on the inner circle lying at an angle of
+    zero degrees relative to the circle circle.
+    Second point it is on the outer circle lies at the same angle as the first point.
+    The third point determines which area is to be shown
+    The fourth point closes our circle     * */
     private fun drawBigSpline(angle: Int, startAngle: Int) {
 
-        Log.d("SpiralPath360", angle.toString())
-
-        val startPoint = getPointOnBorderLineOfCircle(innerCircleCenter, innerCircleRadius , angle)
+        val startPoint = getPointOnBorderLineOfCircle(innerCircleCenter, innerCircleRadius, angle)
         val controlPoint2 = getPointOnBorderLineOfCircle(center, radius, angle)
 
         val radius = innerCircleRadius + distance * angle
         val controlPoint3 = getPointOnBorderLineOfCircle(center, radius, angle)
-
-        spiralPath.moveTo(startPoint.x, startPoint.y)
-        spiralPath.lineTo(controlPoint2.x, controlPoint2.y)
-
+        //Move to point 1,2
+        splinePath.moveTo(startPoint.x, startPoint.y)
+        splinePath.lineTo(controlPoint2.x, controlPoint2.y)
+        //Describe the outer circle to point 2
         (angle..360 + angle step 6)
                 .map { getPointOnBorderLineOfCircle(center, this.radius + 5, it) }
-                .forEach { spiralPath.lineTo(it.x, it.y) }
+                .forEach { splinePath.lineTo(it.x, it.y) }
         //Move to control point 3
-        spiralPath.lineTo(controlPoint3.x, controlPoint3.y)
-
+        splinePath.lineTo(controlPoint3.x, controlPoint3.y)
         angle.downTo(0).forEach {
             val radius = innerCircleRadius + distance * it
             val point = getPointOnBorderLineOfCircle(center, radius, it)
-            spiralPath.lineTo(point.x, point.y)
+            splinePath.lineTo(point.x, point.y)
         }
-
+        //Move to point 4
         for (i in 0..360 step 6) {
-            val point = getPointOnBorderLineOfCircle(innerCircleCenter, innerCircleRadius , i)
+            val point = getPointOnBorderLineOfCircle(innerCircleCenter, innerCircleRadius, i)
             if (i == startAngle) {
-                spiralPath.lineTo(point.x, point.y)
+                splinePath.lineTo(point.x, point.y)
             }
-            spiralPath.lineTo(point.x, point.y)
+            splinePath.lineTo(point.x, point.y)
         }
 
-        spiralPath.close()
+        splinePath.close()
     }
 }

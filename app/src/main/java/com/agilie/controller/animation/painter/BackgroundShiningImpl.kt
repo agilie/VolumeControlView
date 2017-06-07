@@ -45,6 +45,13 @@ class BackgroundShiningImpl(val paint: Paint,
     override fun onSizeChanged(w: Int, h: Int) {
     }
 
+    fun onSetShiningAttrs(minRadius: Float, maxRadius: Float, step: Float) {
+        minShiningRadius = minRadius
+        maxShiningRadius = maxRadius
+        shiningStep = step
+    }
+
+    /**Class for implementing shining logic */
     inner class Incrementer : Thread() {
 
         @Volatile
@@ -83,11 +90,4 @@ class BackgroundShiningImpl(val paint: Paint,
             }
         }
     }
-
-    fun onSetShiningAttrs(minRadius: Float, maxRadius: Float, step: Float) {
-        minShiningRadius = minRadius
-        maxShiningRadius = maxRadius
-        shiningStep = step
-    }
-
 }

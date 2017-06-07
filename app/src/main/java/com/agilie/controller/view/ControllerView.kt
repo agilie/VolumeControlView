@@ -60,18 +60,6 @@ class ControllerView : View, View.OnTouchListener {
         initController()
     }
 
-    fun setBackgroundShiningColor(fillColor: Int, backgroundColor: Int = backgroundLayoutColor) {
-        backgroundColors = intArrayOf(fillColor, backgroundColor)
-        backgroundColorsLine = intArrayOf(backgroundColor, Color.parseColor("#00000000"))
-
-        controller?.backgroundShiningImpl?.colors = backgroundColors
-        controller?.backgroundShiningImpl?.colors2 = backgroundColorsLine
-    }
-
-    fun setBackgroundShiningAttrs(minRadius: Float, maxRadius: Float, step: Float) {
-        controller?.backgroundShiningImpl?.onSetShiningAttrs(minRadius, maxRadius, step)
-    }
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         controller?.onDraw(canvas)
@@ -99,6 +87,18 @@ class ControllerView : View, View.OnTouchListener {
         val bundle = state as Bundle
         controller?.onRestoreInstanceState(bundle)
         super.onRestoreInstanceState(bundle.getParcelable<Parcelable>("superState"))
+    }
+
+    fun setBackgroundShiningColor(fillColor: Int, backgroundColor: Int = backgroundLayoutColor) {
+        backgroundColors = intArrayOf(fillColor, backgroundColor)
+        backgroundColorsLine = intArrayOf(backgroundColor, Color.parseColor("#00000000"))
+
+        controller?.backgroundShiningImpl?.colors = backgroundColors
+        controller?.backgroundShiningImpl?.colors2 = backgroundColorsLine
+    }
+
+    fun setBackgroundShiningAttrs(minRadius: Float, maxRadius: Float, step: Float) {
+        controller?.backgroundShiningImpl?.onSetShiningAttrs(minRadius, maxRadius, step)
     }
 
     private fun initAttrs(attrs: AttributeSet?) {

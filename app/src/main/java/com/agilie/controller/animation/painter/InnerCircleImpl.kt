@@ -9,7 +9,6 @@ class InnerCircleImpl(val paint: Paint) : InnerCircle {
     var radius: Float = 0f
     var center = PointF()
 
-
     override fun onDraw(canvas: Canvas) {
         canvas.drawCircle(center.x, center.y, radius, paint)
     }
