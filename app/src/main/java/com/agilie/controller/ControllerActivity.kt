@@ -17,6 +17,7 @@ class ControllerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_controller)
 
+        controllerView.setStartAngle(145)
         controllerView.backgroundLayoutColor = Color.parseColor("#000000")
         controllerView.controller?.onTouchControllerListener = (object : ControllerImpl.OnTouchControllerListener {
             override fun onControllerDown(angle: Int) {

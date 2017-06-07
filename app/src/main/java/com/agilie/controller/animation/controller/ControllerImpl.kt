@@ -143,13 +143,20 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
     private var onRestore = false
 
+    var startAngle = 0
+    var firstLaunch = true
     private fun createSplinePath() {
         if (onRestore) {
             Log.d("Restore", "-----------------------------------------------------------")
             val restoreTouchPoint = getPointOnBorderLineOfCircle(mainCenter, mainRadius, previousAngle)
             onActionDown(restoreTouchPoint)
         } else {
-            splinePath.onCreateSpiralPath(drawToAngle = 0, startAngle = 0)
+            if (!firstLaunch) splinePath.onCreateSpiralPath(drawToAngle = 0, startAngle = 0)
+            else {
+                splinePath.onCreateSpiralPath(drawToAngle = 0, startAngle = startAngle)
+                onActionDown(getPointOnBorderLineOfCircle(mainCenter, mainRadius, startAngle))
+                firstLaunch = false
+            }
         }
     }
 
@@ -219,10 +226,12 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     fun onSaveInstanceState(bundle: Bundle) {
         bundle.putInt("previousAngle", previousAngle)
         bundle.putBoolean("onRestore", true)
+        bundle.putBoolean("firstLaunch", firstLaunch)
     }
 
     fun onRestoreInstanceState(bundle: Bundle) {
         previousAngle = bundle.getInt("previousAngle")
         onRestore = bundle.getBoolean("onRestore")
+        firstLaunch = bundle.getBoolean("firstLaunch")
     }
 }

@@ -60,6 +60,10 @@ class ControllerView : View, View.OnTouchListener {
         initController()
     }
 
+    fun setStartAngle(angle: Int) {
+        controller?.startAngle = angle
+    }
+
     fun setBackgroundShiningColor(fillColor: Int, backgroundColor: Int = backgroundLayoutColor) {
         backgroundColors = intArrayOf(fillColor, backgroundColor)
         backgroundColorsLine = intArrayOf(backgroundColor, Color.parseColor("#00000000"))
