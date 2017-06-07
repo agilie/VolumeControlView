@@ -63,7 +63,7 @@ class SplinePath(val splinePath: Path, val splinePaint: Paint) : Painter {
             splinePath.lineTo(point.x, point.y)
         }
         //Move to point 4
-        for (i in 0..360 step 6) {
+        for (i in 0..360 step 20) {
             val point = getPointOnBorderLineOfCircle(innerCircleCenter, innerCircleRadius, i)
             if (i == startAngle) {
                 splinePath.lineTo(point.x, point.y)

@@ -12,7 +12,7 @@
         android:id="@+id/controllerView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:controllerSpace="2"
+        app:controllerSpace="3"
         app:sectorRadius="6"
         tools:context="com.agilie.controller.ControllerActivity">
 

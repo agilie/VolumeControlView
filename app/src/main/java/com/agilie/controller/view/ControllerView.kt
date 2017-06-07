@@ -60,6 +60,11 @@ class ControllerView : View, View.OnTouchListener {
         initController()
     }
 
+
+    fun setStartAngle(angle: Int) {
+        controller?.startAngle = angle
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         controller?.onDraw(canvas)
