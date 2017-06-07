@@ -22,15 +22,11 @@ class ControllerView : View, View.OnTouchListener {
         val INNER_CIRCLE_STROKE_WIDTH = 4f
         var SECTOR_STEP = 6
         var CONTROLLER_SPACE = 3f
-        val LINE_LENGTH = 55f
-        val FULL_CIRCLE = 360
-        val CAPTURE_ANGLE = 10
+        val MAX_FACTOR = 1.5f
         val DELTA_TIME = 0.09
         val INCREASE_FACTOR = 6.0
         val DECREASE_FACTOR = 6.0
-        val BLUR_MASK_RADIUS = 40f
-        val OUTER_BLUR_MASK_RADIUS = 60f
-        val MOVABLE_CIRCLE_STROKE = 10f
+        val MIN_FACTOR = 1.3f
         val MOVABLE_CIRCLE_RADIUS = 10f
     }
 

@@ -61,3 +61,20 @@ fun closestValue(value: Double, closestValue: Int): Int {
             return j
     }
 }
+
+fun rotateVector(x: Float, y: Float, angle: Double): PointF {
+    val x0 = (x * Math.cos(Math.toRadians(angle)) + y * Math.sin(angle)).toFloat()
+    val y0 = (x * Math.sin(Math.toRadians(angle)) + y * Math.cos(angle)).toFloat()
+    return PointF(x0, y0)
+}
+
+fun rotateVector1(x0: Float, y0: Float, radius: Float, angle: Double): PointF {
+    val nextPoint = PointF()
+    nextPoint.x = (Math.cos(angle) * radius + x0).toFloat()
+    nextPoint.y = (Math.sin(angle) * radius + y0).toFloat()
+    return nextPoint
+}
+
+/*
+x1 = Math.cos(ang) * R + xc;
+y1 = Math.sin(ang) * R + yc;*/

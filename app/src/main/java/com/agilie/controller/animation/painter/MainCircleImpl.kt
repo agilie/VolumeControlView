@@ -13,6 +13,7 @@ class MainCircleImpl(val paint: Paint, val colors: IntArray) : Painter {
     override fun onDraw(canvas: Canvas) {
         paint.shader = SweepGradient(center.x, center.y, colors, null)
         canvas.drawCircle(center.x, center.y, radius, paint)
+
     }
 
     override fun onSizeChanged(w: Int, h: Int) {

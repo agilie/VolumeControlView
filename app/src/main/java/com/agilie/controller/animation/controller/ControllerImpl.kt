@@ -37,6 +37,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
 
     override fun onDraw(canvas: Canvas) {
+
         backgroundShiningImpl.onDraw(canvas)
         mainCircleImpl.onDraw(canvas)
         linesList.forEach { it.onDraw(canvas) }
@@ -78,6 +79,8 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         angleDelta = 0
 
         onTouchControllerListener?.onControllerDown(actionDownAngle)
+        //backgroundShiningImpl.setLinearGradient(actionDownAngle.toDouble())
+        //backgroundShiningImpl.gradientAngle = actionDownAngle
 
         movableCircleImpl.onActionMove(point)
         splinePath.onReset()
@@ -120,6 +123,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         if (moveMovableCircle(angle)) {
             movableCircleImpl.onActionMove(moveToPoint)
             currentTouchPoint = moveToPoint
+            backgroundShiningImpl.gradientAngle = currentAngle
         } else {
             movableCircleImpl.onActionMove(startPoint)
             currentTouchPoint = moveToPoint
@@ -129,6 +133,9 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
         splinePath.onReset()
         splinePath.onDrawBigSpline(angle, startAngle)
+
+
+        //backgroundShiningImpl.setLinearGradient(currentAngle.toDouble())
 
         previousAngle = currentAngle
     }
