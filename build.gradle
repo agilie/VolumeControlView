@@ -18,6 +18,13 @@ allprojects {
     repositories {
         jcenter()
     }
+
+    tasks.withType(Javadoc) {
+        // Ignores errors from mavenAndroidJavadocs task
+        //options.addStringOption('Xdoclint:none', '-quiet')
+        //options.addStringOption('encoding', 'UTF-8')
+        excludes = ['**/*.kt']
+    }
 }
 
 task clean(type: Delete) {

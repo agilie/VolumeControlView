@@ -1,4 +1,4 @@
-package com.agilie.controller.view
+package com.agilie.splinecontroller.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,12 +8,13 @@ import android.graphics.Path
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import com.agilie.controller.R
-import com.agilie.controller.animation.controller.ControllerImpl
-import com.agilie.controller.animation.painter.*
+import com.agilie.splinecontroller.R
+import com.agilie.splinecontroller.animation.controller.ControllerImpl
+import com.agilie.splinecontroller.animation.painter.*
 
 
 class ControllerView : View, View.OnTouchListener {
@@ -29,6 +30,9 @@ class ControllerView : View, View.OnTouchListener {
     private var splineColor = Color.BLACK
     private var movableCircleColor = Color.rgb(80, 254, 253)
     private var innerCircleColor = Color.rgb(80, 254, 253)
+    private var minShiningRadius = 1.3f
+    private var maxShiningRadius = 1.5f
+    private var shiningStep = 0.004f
 
     var controller: ControllerImpl? = null
     var colors = intArrayOf(
@@ -60,9 +64,18 @@ class ControllerView : View, View.OnTouchListener {
         initController()
     }
 
-
     fun setStartAngle(angle: Int) {
         controller?.startAngle = angle
+    }
+
+    fun setStartPercent(percent: Int) {
+        when (percent) {
+            in 100..Int.MAX_VALUE -> {
+                controller?.startAngle = 360
+                Log.d("tag", "" )
+            }
+            else -> controller?.startAngle = (percent * 360) / 100
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -102,17 +115,35 @@ class ControllerView : View, View.OnTouchListener {
         controller?.backgroundShiningImpl?.colors2 = backgroundColorsLine
     }
 
-    fun setBackgroundShiningAttrs(minRadius: Float, maxRadius: Float, step: Float) {
-        controller?.backgroundShiningImpl?.onSetShiningAttrs(minRadius, maxRadius, step)
+    fun setShiningMaxRadius(radius: Float) {
+        controller?.backgroundShiningImpl?.maxShiningRadius = radius
     }
+
+    fun setShiningMinRadius(radius: Float) {
+        controller?.backgroundShiningImpl?.minShiningRadius = radius
+    }
+
+    fun setShiningStep(step: Float) {
+        controller?.backgroundShiningImpl?.frequency = step
+    }
+
+    fun getShiningMaxRadius() = controller?.backgroundShiningImpl?.maxShiningRadius
+    fun getShiningMinRadius() = controller?.backgroundShiningImpl?.minShiningRadius
+    fun getFrequency() = controller?.backgroundShiningImpl?.frequency
 
     private fun initAttrs(attrs: AttributeSet?) {
 
         val attributes = context
                 .obtainStyledAttributes(attrs, R.styleable.ControllerView)
+        //Colors attrs
         innerCircleColor = attributes.getColor(R.styleable.ControllerView_innerCircleColor, innerCircleColor)
         movableCircleColor = attributes.getColor(R.styleable.ControllerView_movableCircleColor, movableCircleColor)
         splineColor = attributes.getColor(R.styleable.ControllerView_splineCircleColor, splineColor)
+
+        //Shining attrs
+        minShiningRadius = attributes.getFloat(R.styleable.ControllerView_minShiningRadius, minShiningRadius)
+        maxShiningRadius = attributes.getFloat(R.styleable.ControllerView_maxShiningRadius, maxShiningRadius)
+        shiningStep = attributes.getFloat(R.styleable.ControllerView_shiningStep, shiningStep)
 
         val step = attributes.getInt(R.styleable.ControllerView_sectorRadius, SECTOR_STEP)
         val controllerSpace = attributes.getFloat(R.styleable.ControllerView_controllerSpace, CONTROLLER_SPACE)
@@ -137,9 +168,11 @@ class ControllerView : View, View.OnTouchListener {
                 BackgroundShiningImpl(Paint(),
                         Paint(),
                         backgroundColors,
-                        backgroundColorsLine))
+                        backgroundColorsLine,
+                        minShiningRadius,
+                        maxShiningRadius,
+                        shiningStep))
     }
-
 
     private fun setInnerCirclePaint() = Paint().apply {
         color = innerCircleColor
@@ -165,7 +198,6 @@ class ControllerView : View, View.OnTouchListener {
         strokeCap = Paint.Cap.SQUARE
         strokeWidth = 1F
         style = Paint.Style.FILL
-
     }
 
 }

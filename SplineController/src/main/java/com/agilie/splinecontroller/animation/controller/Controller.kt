@@ -1,9 +1,9 @@
-package com.agilie.controller.animation.controller
+package com.agilie.splinecontroller.animation.controller
 
 import android.graphics.Canvas
 
 interface Controller {
 
-    fun onDraw(canvas: android.graphics.Canvas)
+    fun onDraw(canvas: Canvas)
     fun onSizeChanged(width: Int, height: Int)
 }

@@ -1,9 +1,9 @@
-package com.agilie.controller.animation.painter
+package com.agilie.splinecontroller.animation.painter
 
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PointF
-import com.agilie.controller.pointInCircle
+import com.agilie.splinecontroller.pointInCircle
 
 class MovableCircleImpl(val paint: Paint) : MovableCircle {
 

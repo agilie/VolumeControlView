@@ -1,4 +1,4 @@
-package com.agilie.controller.animation.painter
+package com.agilie.splinecontroller.animation.painter
 
 import android.graphics.PointF
 

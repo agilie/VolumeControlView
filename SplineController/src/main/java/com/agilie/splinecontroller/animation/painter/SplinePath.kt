@@ -1,10 +1,10 @@
-package com.agilie.controller.animation.painter
+package com.agilie.splinecontroller.animation.painter
 
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PointF
-import com.agilie.controller.getPointOnBorderLineOfCircle
+import com.agilie.splinecontroller.getPointOnBorderLineOfCircle
 
 class SplinePath(val splinePath: Path, val splinePaint: Paint) : Painter {
 

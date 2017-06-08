@@ -1,4 +1,4 @@
-package com.agilie.controller
+package com.agilie.splinecontroller
 
 import android.graphics.PointF
 

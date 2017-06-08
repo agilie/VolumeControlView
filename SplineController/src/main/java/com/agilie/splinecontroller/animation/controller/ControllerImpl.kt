@@ -1,18 +1,19 @@
-package com.agilie.controller.animation.controller
+package com.agilie.splinecontroller.animation.controller
 
 import android.graphics.Canvas
 import android.graphics.PointF
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
-import com.agilie.controller.animation.painter.*
-import com.agilie.controller.calculateAngleWithTwoVectors
-import com.agilie.controller.closestValue
-import com.agilie.controller.getPointOnBorderLineOfCircle
-import com.agilie.controller.view.ControllerView
-import com.agilie.controller.view.ControllerView.Companion.CONTROLLER_SPACE
-import com.agilie.controller.view.ControllerView.Companion.INNER_CIRCLE_STROKE_WIDTH
+import com.agilie.splinecontroller.animation.painter.*
+import com.agilie.splinecontroller.calculateAngleWithTwoVectors
+import com.agilie.splinecontroller.closestValue
+import com.agilie.splinecontroller.getPointOnBorderLineOfCircle
+import com.agilie.splinecontroller.view.ControllerView
+import com.agilie.splinecontroller.view.ControllerView.Companion.CONTROLLER_SPACE
+import com.agilie.splinecontroller.view.ControllerView.Companion.INNER_CIRCLE_STROKE_WIDTH
 import java.util.*
+
 
 class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
                      val movableCircleImpl: MovableCircleImpl,
@@ -21,9 +22,9 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
                      var backgroundShiningImpl: BackgroundShiningImpl) : Controller {
 
     interface OnTouchControllerListener {
-        fun onControllerDown(angle: Int)
-        fun onControllerMove(angle: Int)
-        fun onAngleChange(angle: Int)
+        fun onControllerDown(angle: Int, percent: Int)
+        fun onControllerMove(angle: Int, percent: Int)
+        fun onAngleChange(angle: Int, percent: Int)
     }
 
     private var width = 0
@@ -69,9 +70,24 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         }
     }
 
+    /**Save state of previousAngle*/
+    fun onSaveInstanceState(bundle: Bundle) {
+        bundle.putInt("previousAngle", previousAngle)
+        bundle.putBoolean("onRestore", true)
+        bundle.putBoolean("firstLaunch", firstLaunch)
+    }
+
+    /**Restore state*/
+    fun onRestoreInstanceState(bundle: Bundle) {
+        previousAngle = bundle.getInt("previousAngle")
+        onRestore = bundle.getBoolean("onRestore")
+        firstLaunch = bundle.getBoolean("firstLaunch")
+    }
+
     /** Move shapes to new position*/
     private fun onActionDown(touchPointF: PointF) {
-        actionDownAngle = getClosestAngle(touchPointF)
+        if (firstLaunch) actionDownAngle = startAngle else getClosestAngle(touchPointF)
+
         val startAngle = getStartAngle(touchPointF)
         val point = getPointOnBorderLineOfCircle(controllerCenter, eventRadius, startAngle)
 
@@ -79,8 +95,8 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         direction = Direction.UNDEFINED
         angleDelta = 0
 
-        onTouchControllerListener?.onControllerDown(actionDownAngle)
-        onTouchControllerListener?.onAngleChange(actionDownAngle)
+        onTouchControllerListener?.onControllerDown(actionDownAngle, calculatePercent(actionDownAngle))
+        onTouchControllerListener?.onAngleChange(actionDownAngle, calculatePercent(actionDownAngle))
 
         movableCircleImpl.onActionMove(point)
         backgroundShiningImpl.gradientAngle = actionDownAngle
@@ -132,8 +148,8 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
             movableCircleImpl.onActionMove(startPoint)
         }
 
-        onTouchControllerListener?.onControllerMove(angle)
-        onTouchControllerListener?.onAngleChange(angle)
+        onTouchControllerListener?.onControllerMove(angle, calculatePercent(angle))
+        onTouchControllerListener?.onAngleChange(angle, calculatePercent(angle))
 
         splinePath.onReset()
         splinePath.onDrawBigSpline(angle, currentAngle)
@@ -233,17 +249,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     private fun getStartAngle(touchPointF: PointF) =
             (Math.round(calculateAngleWithTwoVectors(touchPointF, controllerCenter))).toInt()
 
-    /**Save state of previousAngle*/
-    fun onSaveInstanceState(bundle: Bundle) {
-        bundle.putInt("previousAngle", previousAngle)
-        bundle.putBoolean("onRestore", true)
-        bundle.putBoolean("firstLaunch", firstLaunch)
-    }
 
-    /**Restore state*/
-    fun onRestoreInstanceState(bundle: Bundle) {
-        previousAngle = bundle.getInt("previousAngle")
-        onRestore = bundle.getBoolean("onRestore")
-        firstLaunch = bundle.getBoolean("firstLaunch")
-    }
+    private fun calculatePercent(angle: Int) = Math.round(angle / 360f * 100)
+
 }

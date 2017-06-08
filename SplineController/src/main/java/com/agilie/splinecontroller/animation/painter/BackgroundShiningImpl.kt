@@ -1,12 +1,15 @@
-package com.agilie.controller.animation.painter
+package com.agilie.splinecontroller.animation.painter
 
 import android.graphics.*
-import com.agilie.controller.getPointOnBorderLineOfCircle
+import com.agilie.splinecontroller.getPointOnBorderLineOfCircle
 
 class BackgroundShiningImpl(val paint: Paint,
                             val paint2: Paint,
                             var colors: IntArray,
-                            var colors2: IntArray) : Painter {
+                            var colors2: IntArray,
+                            var minShiningRadius: Float,
+                            var maxShiningRadius: Float,
+                            var frequency: Float) : Painter {
 
     private var incrementer: Incrementer? = null
 
@@ -17,13 +20,9 @@ class BackgroundShiningImpl(val paint: Paint,
 
     @Volatile
     private var currentSplash = 1.3f
-    private var minShiningRadius = 1.3f
-    private var maxShiningRadius = 1.5f
-    private var shiningStep = 0.004f
     var radius: Float = 0f
     var center = PointF()
     var gradientAngle = 0
-
 
     override fun onDraw(canvas: Canvas) {
 
@@ -43,12 +42,6 @@ class BackgroundShiningImpl(val paint: Paint,
     }
 
     override fun onSizeChanged(w: Int, h: Int) {
-    }
-
-    fun onSetShiningAttrs(minRadius: Float, maxRadius: Float, step: Float) {
-        minShiningRadius = minRadius
-        maxShiningRadius = maxRadius
-        shiningStep = step
     }
 
     /**Class for implementing shining logic */
@@ -72,7 +65,7 @@ class BackgroundShiningImpl(val paint: Paint,
 
         private fun onDecrement() {
             if (currentSplash >= minShiningRadius) {
-                time += shiningStep
+                time += frequency
                 currentSplash -= time
             } else {
                 time = 0f
@@ -83,7 +76,7 @@ class BackgroundShiningImpl(val paint: Paint,
         private fun onIncrement() {
             if (currentSplash <= maxShiningRadius) {
                 currentSplash += time
-                time += shiningStep
+                time += frequency
             } else {
                 time = 0f
                 isIncrement = false
