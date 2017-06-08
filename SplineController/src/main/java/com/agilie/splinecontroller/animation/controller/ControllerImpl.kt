@@ -86,7 +86,8 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
     /** Move shapes to new position*/
     private fun onActionDown(touchPointF: PointF) {
-        if (firstLaunch) actionDownAngle = startAngle else getClosestAngle(touchPointF)
+         //if (firstLaunch) actionDownAngle = startAngle else getClosestAngle(touchPointF)
+         actionDownAngle =  getClosestAngle(touchPointF)
 
         val startAngle = getStartAngle(touchPointF)
         val point = getPointOnBorderLineOfCircle(controllerCenter, eventRadius, startAngle)
