@@ -127,7 +127,9 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         val moveToPoint = getPointOnBorderLineOfCircle(controllerCenter, eventRadius, currentAngle)
         val startPoint = getPointOnBorderLineOfCircle(controllerCenter, eventRadius, 0)
 
-        if (previousAngle != currentAngle) {
+        val angleChanged = previousAngle != currentAngle
+
+        if (angleChanged) {
             if (overlappedClockwise(direction, previousAngle, currentAngle)) {
                 angleDelta += (360 - previousAngle + currentAngle)
             } else if (overlappedCclockwise(direction, previousAngle, currentAngle)) {
@@ -142,6 +144,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         }
 
         val angle = Math.max(Math.min(actionDownAngle + angleDelta, 360), 0)
+        val percentage = calculatePercent(angle)
 
         if (moveMovableCircle(angle)) {
             movableCircleImpl.onActionMove(moveToPoint)
@@ -150,8 +153,11 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
             movableCircleImpl.onActionMove(startPoint)
         }
 
-        onTouchControllerListener?.onControllerMove(angle, calculatePercent(angle))
-        onTouchControllerListener?.onAngleChange(angle, calculatePercent(angle))
+        onTouchControllerListener?.onControllerMove(angle, percentage)
+
+        if (angleChanged) {
+            onTouchControllerListener?.onAngleChange(angle, percentage)
+        }
 
         splinePath.onReset()
         splinePath.onDrawBigSpline(angle, currentAngle)

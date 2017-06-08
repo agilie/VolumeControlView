@@ -3,6 +3,7 @@ package com.agilie.controller
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
 import android.widget.SeekBar
 import com.agilie.splinecontroller.animation.controller.ControllerImpl
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,18 +20,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initController() {
+        value.setFactory { LayoutInflater.from(this).inflate(R.layout.percent_counter, value, false) }
+
         controllerView.setStartPercent(50)
         controllerView.backgroundLayoutColor = Color.parseColor("#000000")
         controllerView.controller?.onTouchControllerListener = (object : ControllerImpl.OnTouchControllerListener {
             override fun onControllerDown(angle: Int, percent: Int) {
-                value.text = percent.toString() + "%"
+                // nothing here
             }
 
             override fun onControllerMove(angle: Int, percent: Int) {
-                value.text = percent.toString() + "%"
+                // nothing here
             }
 
             override fun onAngleChange(angle: Int, percent: Int) {
+                value.setText(percent.toString() + "%")
+
                 when (angle) {
                     in 0..45 -> controllerView.setBackgroundShiningColor(Color.parseColor("#FF7F00"))
                     in 46..90 -> controllerView.setBackgroundShiningColor(Color.parseColor("#9FFF00"))
