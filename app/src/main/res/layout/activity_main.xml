@@ -8,15 +8,15 @@
     tools:context="com.agilie.controller.MainActivity">
 
     <TextView
-        android:textSize="50dp"
-        android:textColor="@color/colorWhite"
-        android:text="Current value"
         android:id="@+id/value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="9dp"
+        android:text="Current value"
+        android:textColor="@color/colorWhite"
+        android:textSize="50dp" />
 
     <com.agilie.splinecontroller.view.ControllerView
 
@@ -84,7 +84,7 @@
         android:layout_above="@+id/seekBarMaxRadius"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp"
-        android:text="Frequency"
+        android:text="Shining frequency"
         android:textColor="@color/colorWhite" />
 
 </RelativeLayout>

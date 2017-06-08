@@ -60,12 +60,13 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     fun onTouchEvent(event: MotionEvent) {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                onActionDown(PointF(event.x, event.y))
+                onActionDownAndUp(PointF(event.x, event.y))
             }
             MotionEvent.ACTION_MOVE -> {
                 onActionMove(PointF(event.x, event.y))
             }
             MotionEvent.ACTION_UP -> {
+                onActionDownAndUp(PointF(event.x, event.y))
             }
         }
     }
@@ -85,9 +86,9 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     }
 
     /** Move shapes to new position*/
-    private fun onActionDown(touchPointF: PointF) {
-         //if (firstLaunch) actionDownAngle = startAngle else getClosestAngle(touchPointF)
-         actionDownAngle =  getClosestAngle(touchPointF)
+    private fun onActionDownAndUp(touchPointF: PointF) {
+        //if (firstLaunch) actionDownAngle = startAngle else getClosestAngle(touchPointF)
+        actionDownAngle = getClosestAngle(touchPointF)
 
         val startAngle = getStartAngle(touchPointF)
         val point = getPointOnBorderLineOfCircle(controllerCenter, eventRadius, startAngle)
@@ -174,12 +175,12 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         if (onRestore) {
             Log.d("Restore", "-----------------------------------------------------------")
             val restoreTouchPoint = getPointOnBorderLineOfCircle(controllerCenter, controllerRadius, previousAngle)
-            onActionDown(restoreTouchPoint)
+            onActionDownAndUp(restoreTouchPoint)
         } else {
             if (!firstLaunch) splinePath.onCreateSpiralPath(drawToAngle = 0, startAngle = 0)
             else {
                 splinePath.onCreateSpiralPath(drawToAngle = 0, startAngle = startAngle)
-                onActionDown(getPointOnBorderLineOfCircle(controllerCenter, controllerRadius, startAngle))
+                onActionDownAndUp(getPointOnBorderLineOfCircle(controllerCenter, controllerRadius, startAngle))
                 firstLaunch = false
             }
         }
