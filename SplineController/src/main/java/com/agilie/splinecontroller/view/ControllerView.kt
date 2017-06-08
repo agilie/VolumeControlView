@@ -123,7 +123,7 @@ class ControllerView : View, View.OnTouchListener {
         controller?.backgroundShiningImpl?.minShiningRadius = radius
     }
 
-    fun setShiningStep(step: Float) {
+    fun setShiningFrequency(step: Float) {
         controller?.backgroundShiningImpl?.frequency = step
     }
 

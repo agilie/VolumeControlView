@@ -3,7 +3,7 @@
     android:id="@+id/dialogPick"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape">
+    android:background="@color/colorPrimary">
 
     <RelativeLayout
         android:id="@+id/seekBarsLayout"
@@ -78,7 +78,7 @@
 
         <Button
             android:id="@+id/apply"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -87,7 +87,7 @@
 
         <Button
             android:id="@+id/cancel"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"

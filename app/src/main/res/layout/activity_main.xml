@@ -11,19 +11,19 @@
         android:id="@+id/value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="47dp"
         android:text="Current value"
         android:textColor="@color/colorWhite"
-        android:textSize="50dp" />
+        android:textSize="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <com.agilie.splinecontroller.view.ControllerView
 
         android:id="@+id/controllerView"
         android:layout_width="wrap_content"
         android:layout_height="270dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="150dp"
         app:controllerSpace="3"
         app:sectorRadius="6"
         tools:context="com.agilie.controller.ControllerActivity">
@@ -31,60 +31,6 @@
     </com.agilie.splinecontroller.view.ControllerView>
 
 
-    <android.support.v7.widget.AppCompatSeekBar
-        android:id="@+id/seekBarMinRadius"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="44dp"
-        android:theme="@style/Theme.AppCompat" />
 
-    <android.support.v7.widget.AppCompatSeekBar
-        android:id="@+id/seekBarMaxRadius"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/seekBarMinRadius"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="30dp"
-        android:theme="@style/Theme.AppCompat" />
-
-    <android.support.v7.widget.AppCompatSeekBar
-        android:id="@+id/frequency"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/seekBarMaxRadius"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="34dp"
-        android:max="100"
-        android:theme="@style/Theme.AppCompat" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/seekBarMinRadius"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
-        android:text="Shining min radius"
-        android:textColor="@color/colorWhite" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/seekBarMinRadius"
-        android:layout_alignStart="@+id/textView"
-        android:layout_marginBottom="9dp"
-        android:text="Shining max radius"
-        android:textColor="@color/colorWhite" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/seekBarMaxRadius"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="14dp"
-        android:text="Shining frequency"
-        android:textColor="@color/colorWhite" />
 
 </RelativeLayout>
