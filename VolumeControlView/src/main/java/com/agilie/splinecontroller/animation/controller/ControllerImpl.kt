@@ -9,9 +9,9 @@ import com.agilie.splinecontroller.animation.painter.*
 import com.agilie.splinecontroller.calculateAngleWithTwoVectors
 import com.agilie.splinecontroller.closestValue
 import com.agilie.splinecontroller.getPointOnBorderLineOfCircle
-import com.agilie.splinecontroller.view.ControllerView
-import com.agilie.splinecontroller.view.ControllerView.Companion.CONTROLLER_SPACE
-import com.agilie.splinecontroller.view.ControllerView.Companion.INNER_CIRCLE_STROKE_WIDTH
+import com.agilie.splinecontroller.view.VolumeControlView
+import com.agilie.splinecontroller.view.VolumeControlView.Companion.CONTROLLER_SPACE
+import com.agilie.splinecontroller.view.VolumeControlView.Companion.INNER_CIRCLE_STROKE_WIDTH
 import java.util.*
 
 
@@ -224,7 +224,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         backgroundShiningImpl.radius = controllerRadius
 
         innerCircleImpl.radius = controllerRadius / 2
-        movableCircleImpl.radius = ControllerView.MOVABLE_CIRCLE_RADIUS
+        movableCircleImpl.radius = VolumeControlView.MOVABLE_CIRCLE_RADIUS
 
         splinePath.innerCircleRadius = innerCircleImpl.radius
         splinePath.radius = controllerRadius
@@ -237,7 +237,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
 
     /** Draw sector lines */
     private fun initLines() {
-        for (i in 0..360 step ControllerView.SECTOR_STEP) {
+        for (i in 0..360 step VolumeControlView.SECTOR_STEP) {
             val line = SimpleLineImpl(splinePath.splinePaint)
             line.startPoint = controllerCenter
             val endPoint = getPointOnBorderLineOfCircle(controllerCenter.x,
@@ -252,7 +252,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     private fun overlappedClockwise(direction: Direction, previousAngle: Int, currentAngle: Int) = direction == Direction.CLOCKWISE && (previousAngle - currentAngle) > 45
 
     private fun getClosestAngle(touchPointF: PointF) =
-            closestValue(calculateAngleWithTwoVectors(touchPointF, controllerCenter), ControllerView.SECTOR_STEP)
+            closestValue(calculateAngleWithTwoVectors(touchPointF, controllerCenter), VolumeControlView.SECTOR_STEP)
 
     private fun getStartAngle(touchPointF: PointF) =
             (Math.round(calculateAngleWithTwoVectors(touchPointF, controllerCenter))).toInt()

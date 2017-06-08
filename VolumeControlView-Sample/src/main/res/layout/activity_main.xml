@@ -17,7 +17,7 @@
         android:inAnimation="@android:anim/fade_in"
         android:outAnimation="@android:anim/fade_out"/>
 
-    <com.agilie.splinecontroller.view.ControllerView
+    <com.agilie.splinecontroller.view.VolumeControlView
 
         android:id="@+id/controllerView"
         android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
         app:sectorRadius="6"
         tools:context="com.agilie.controller.ControllerActivity">
 
-    </com.agilie.splinecontroller.view.ControllerView>
+    </com.agilie.splinecontroller.view.VolumeControlView>
 
 
     <android.support.v7.widget.AppCompatSeekBar

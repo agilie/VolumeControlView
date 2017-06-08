@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="ControllerView">
+    <declare-styleable name="VolumeControlView">
 
         <attr name="innerCircleColor" format="color" />
         <attr name="movableCircleColor" format="color" />

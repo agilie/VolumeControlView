@@ -17,7 +17,7 @@ import com.agilie.splinecontroller.animation.controller.ControllerImpl
 import com.agilie.splinecontroller.animation.painter.*
 
 
-class ControllerView : View, View.OnTouchListener {
+class VolumeControlView : View, View.OnTouchListener {
 
     companion object {
         val INNER_CIRCLE_STROKE_WIDTH = 4f
