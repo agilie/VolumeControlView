@@ -8,7 +8,7 @@
 [Agilie Team](https://agilie.com/en/ios-development-services) would like to offer you our new lightweight open-source library called VolumeControlView.
 This library can act as any controller and can be easily integrated into your project.
 
-When can you use AGMobileGift?
+When can you use VolumeControlView?
 
 Problems? Check the [Issues](https://github.com/agilie/VolumeControlView/issues) block
 to find the solution or create an new issue that we will fix asap.
