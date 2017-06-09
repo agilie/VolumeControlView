@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
         frequency.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                controllerView.setShiningStep(progress / 10000f)
+                controllerView.setShiningFrequency(progress / 10000f)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {

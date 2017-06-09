@@ -97,8 +97,9 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         direction = Direction.UNDEFINED
         angleDelta = 0
 
-        onTouchControllerListener?.onControllerDown(actionDownAngle, calculatePercent(actionDownAngle))
-        onTouchControllerListener?.onAngleChange(actionDownAngle, calculatePercent(actionDownAngle))
+        val percentage = calculatePercent(actionDownAngle)
+        onTouchControllerListener?.onControllerDown(actionDownAngle, percentage)
+        onTouchControllerListener?.onAngleChange(actionDownAngle, percentage)
 
         movableCircleImpl.onActionMove(point)
         backgroundShiningImpl.gradientAngle = actionDownAngle

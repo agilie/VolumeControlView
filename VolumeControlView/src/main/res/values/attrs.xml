@@ -11,7 +11,7 @@
         <attr name="movableCircleRadius" format="float" />
         <attr name="minShiningRadius" format="float" />
         <attr name="maxShiningRadius" format="float" />
-        <attr name="shiningStep" format="float" />
+        <attr name="shiningFrequency" format="float" />
 
     </declare-styleable>
 

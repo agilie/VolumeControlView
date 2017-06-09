@@ -123,7 +123,7 @@ class VolumeControlView : View, View.OnTouchListener {
         controller?.backgroundShiningImpl?.minShiningRadius = radius
     }
 
-    fun setShiningStep(step: Float) {
+    fun setShiningFrequency(step: Float) {
         controller?.backgroundShiningImpl?.frequency = step
     }
 
@@ -134,20 +134,20 @@ class VolumeControlView : View, View.OnTouchListener {
     private fun initAttrs(attrs: AttributeSet?) {
 
         val attributes = context
-                .obtainStyledAttributes(attrs, R.styleable.ControllerView)
+                .obtainStyledAttributes(attrs, R.styleable.VolumeControlView)
         //Colors attrs
-        innerCircleColor = attributes.getColor(R.styleable.ControllerView_innerCircleColor, innerCircleColor)
-        movableCircleColor = attributes.getColor(R.styleable.ControllerView_movableCircleColor, movableCircleColor)
-        splineColor = attributes.getColor(R.styleable.ControllerView_splineCircleColor, splineColor)
+        innerCircleColor = attributes.getColor(R.styleable.VolumeControlView_innerCircleColor, innerCircleColor)
+        movableCircleColor = attributes.getColor(R.styleable.VolumeControlView_movableCircleColor, movableCircleColor)
+        splineColor = attributes.getColor(R.styleable.VolumeControlView_splineCircleColor, splineColor)
 
         //Shining attrs
-        minShiningRadius = attributes.getFloat(R.styleable.ControllerView_minShiningRadius, minShiningRadius)
-        maxShiningRadius = attributes.getFloat(R.styleable.ControllerView_maxShiningRadius, maxShiningRadius)
-        shiningStep = attributes.getFloat(R.styleable.ControllerView_shiningStep, shiningStep)
+        minShiningRadius = attributes.getFloat(R.styleable.VolumeControlView_minShiningRadius, minShiningRadius)
+        maxShiningRadius = attributes.getFloat(R.styleable.VolumeControlView_maxShiningRadius, maxShiningRadius)
+        shiningStep = attributes.getFloat(R.styleable.VolumeControlView_shiningFrequency, shiningStep)
 
-        val step = attributes.getInt(R.styleable.ControllerView_sectorRadius, SECTOR_STEP)
-        val controllerSpace = attributes.getFloat(R.styleable.ControllerView_controllerSpace, CONTROLLER_SPACE)
-        val movableCircleRadius = attributes.getFloat(R.styleable.ControllerView_movableCircleRadius, MOVABLE_CIRCLE_RADIUS)
+        val step = attributes.getInt(R.styleable.VolumeControlView_sectorRadius, SECTOR_STEP)
+        val controllerSpace = attributes.getFloat(R.styleable.VolumeControlView_controllerSpace, CONTROLLER_SPACE)
+        val movableCircleRadius = attributes.getFloat(R.styleable.VolumeControlView_movableCircleRadius, MOVABLE_CIRCLE_RADIUS)
 
         //Checks start values
         SECTOR_STEP = if (step > 0) step else SECTOR_STEP
