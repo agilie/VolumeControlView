@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         value.setFactory { LayoutInflater.from(this).inflate(R.layout.percent_counter, value, false) }
 
         controllerView.setStartPercent(50)
-        controllerView.backgroundLayoutColor = Color.parseColor("#000000")
+        controllerView.backgroundLayoutColor = Color.BLACK
         controllerView.controller?.onTouchControllerListener = (object : ControllerImpl.OnTouchControllerListener {
             override fun onControllerDown(angle: Int, percent: Int) {
                 // nothing here

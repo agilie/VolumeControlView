@@ -60,13 +60,13 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     fun onTouchEvent(event: MotionEvent) {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                onActionDownAndUp(PointF(event.x, event.y))
+                onActionDown(PointF(event.x, event.y))
             }
             MotionEvent.ACTION_MOVE -> {
                 onActionMove(PointF(event.x, event.y))
             }
             MotionEvent.ACTION_UP -> {
-                onActionDownAndUp(PointF(event.x, event.y))
+                //nothing here
             }
         }
     }
@@ -86,7 +86,7 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
     }
 
     /** Move shapes to new position*/
-    private fun onActionDownAndUp(touchPointF: PointF) {
+    private fun onActionDown(touchPointF: PointF) {
         //if (firstLaunch) actionDownAngle = startAngle else getClosestAngle(touchPointF)
         actionDownAngle = getClosestAngle(touchPointF)
 
@@ -182,12 +182,12 @@ class ControllerImpl(val innerCircleImpl: InnerCircleImpl,
         if (onRestore) {
             Log.d("Restore", "-----------------------------------------------------------")
             val restoreTouchPoint = getPointOnBorderLineOfCircle(controllerCenter, controllerRadius, previousAngle)
-            onActionDownAndUp(restoreTouchPoint)
+            onActionDown(restoreTouchPoint)
         } else {
             if (!firstLaunch) splinePath.onCreateSpiralPath(drawToAngle = 0, startAngle = 0)
             else {
                 splinePath.onCreateSpiralPath(drawToAngle = 0, startAngle = startAngle)
-                onActionDownAndUp(getPointOnBorderLineOfCircle(controllerCenter, controllerRadius, startAngle))
+                onActionDown(getPointOnBorderLineOfCircle(controllerCenter, controllerRadius, startAngle))
                 firstLaunch = false
             }
         }
