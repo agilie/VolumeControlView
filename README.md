@@ -3,10 +3,7 @@
 
 ### VolumeControl
 
-<img src="https://user-images.githubusercontent.com/17047537/26981461-edd0ee7a-4d3d-11e7-8b79-5f9ce4a80552.gif">
-   
-<img src="https://user-images.githubusercontent.com/17047537/26981465-ef1759ae-4d3d-11e7-85bd-b04338761719.gif">
-
+<img src="https://user-images.githubusercontent.com/17047537/26981461-edd0ee7a-4d3d-11e7-8b79-5f9ce4a80552.gif"> <img src="https://user-images.githubusercontent.com/17047537/26981465-ef1759ae-4d3d-11e7-85bd-b04338761719.gif">
 
 [Agilie Team](https://agilie.com/en/ios-development-services) would like to offer you our new lightweight open-source library called VolumeControlView.
 This library can act as any controller and can be easily integrated into your project.
@@ -22,19 +19,14 @@ to find the solution or create an new issue that we will fix asap.
 To create a controller for your taste, you need to select the background color (the background color must match the color of your layout), the color palette of the controller itself and the color of the glow.
 
 ````kotlin
-
 controllerView.backgroundLayoutColor = Color.BLACK
 controllerView.colors = intArrayOf()
 controllerView.setBackgroundShiningColor(Color.parseColor("#FF7F00"))
-
 ````
-
-
 In VolumeControlerView implemented onTouchControllerListener which contains methods *onControllerDown*, *onControllerMove*, *onAngleChange*.
 How can they be used?
 For example, the *onAngleChange* method:
 ````kotlin
-
 override fun onAngleChange(angle: Int, percent: Int) {
                 value.setText(percent.toString() + "%")
 
@@ -50,15 +42,12 @@ override fun onAngleChange(angle: Int, percent: Int) {
                 }
 }
 ````
-
-
 Depending on the angle of rotation of the controller, the illumination color changes.
 
 Attributes that can also be managed:
 1. Glow frequency
 2. Radius of glow
 3. The initial position of the controller
-
 ```kotlin
 controllerView.setStartPercent(50)
 controllerView.setShiningMinRadius
