@@ -19,7 +19,11 @@ Just add VolumeControlView to your layout file:
 
 The visual display of this regulator can be easily customized. One has a possibility to choose colors, the gradient style and background according to the wishes:
 ```kotlin
-controllerView.colors = intArrayOf()
+var colors : intArrayOf
+var backgroundLayoutColor : Color
+var minShiningRadius : Float
+var maxShiningRadius : Float
+var shiningFrequency : Float
 ````
 ````xml
 <declare-styleable name="VolumeControlView">

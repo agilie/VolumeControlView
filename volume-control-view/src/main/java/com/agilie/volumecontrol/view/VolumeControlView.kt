@@ -73,7 +73,7 @@ class VolumeControlView : View, View.OnTouchListener {
         when (percent) {
             in 100..Int.MAX_VALUE -> {
                 controller?.startAngle = 360
-                Log.d("tag", "" )
+                Log.d("tag", "")
             }
             else -> controller?.startAngle = (percent * 360) / 100
         }
