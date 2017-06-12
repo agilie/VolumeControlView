@@ -20,7 +20,8 @@ Just add VolumeControlView to your layout file:
 The visual display of this regulator can be easily customized. One has a possibility to choose colors, the gradient style and background according to the wishes:
 ```kotlin
 controllerView.colors = intArrayOf()
-
+````
+````xml
 <declare-styleable name="VolumeControlView">
         <attr name="innerCircleColor" format="color" />
         <attr name="movableCircleColor" format="color" />
@@ -45,7 +46,12 @@ Add dependency in your `build.gradle` file:
 ### Maven
 Add  dependency in your `.pom` file:
 ````xml
-
+<dependency>
+  <groupId>com.agilie</groupId>
+  <artifactId>volume-control-view</artifactId>
+  <version>1.0</version>
+  <type>pom</type>
+</dependency>
 ````
 
 ## Requirements
