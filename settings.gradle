@@ -1,1 +1,1 @@
-include ':VolumeControlView-Sample', ':VolumeControlView'
+include ':VolumeControlView-Sample', ':volume-control-view'

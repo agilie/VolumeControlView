@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.widget.SeekBar
-import com.agilie.splinecontroller.animation.controller.ControllerImpl
+import com.agilie.volumecontrol.animation.controller.ControllerImpl
 import kotlinx.android.synthetic.main.activity_main.*
 
 
