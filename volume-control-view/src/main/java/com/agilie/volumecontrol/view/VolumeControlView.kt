@@ -12,10 +12,11 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import com.agilie.splinecontroller.R
-import com.agilie.splinecontroller.R.styleable.*
+import com.agilie.volomecontrolview.R
+import com.agilie.volomecontrolview.R.styleable.*
 import com.agilie.volumecontrol.animation.controller.ControllerImpl
 import com.agilie.volumecontrol.animation.painter.*
+
 
 
 class VolumeControlView : View, View.OnTouchListener {
