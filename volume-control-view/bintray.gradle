@@ -1,0 +1,47 @@
+apply plugin: 'com.jfrog.bintray'
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// Bintray https://github.com/bintray/gradle-bintray-plugin
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'VolumeControlView' //YOUR PACKAGE NAME
+        userOrg = 'agilie'
+        //An optional organization name when the repo belongs to one of the user's orgs
+        desc = 'Visual regulator can be connected to a player or other smart house’s device making the process of controlling the level of a particular characteristic much easier.' // YOUR LIBRARY DESCRIPTION
+        websiteUrl = 'https://github.com/agilie/VolumeControlView' // YOUR SITE
+        vcsUrl = 'https://github.com/agilie/VolumeControlView' // YOUR GIT REPO
+        licenses = ["Apache-2.0"] // A LIST OF YOUR LICENCES
+        publish = true
+        publicDownloadNumbers = true
+    }
+
+    version = '1.0' //YOUR LIBRARY VERSION
+}
+

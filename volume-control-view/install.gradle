@@ -1,0 +1,35 @@
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.agilie' // CREATE A GROUP ID FOR YOUR LIBRARY
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'VolumeControlView'
+                groupId 'com.agilie' // CREATE A GROUP ID FOR YOUR LIBRARY
+                artifactId 'volume-control-view' // THE NAME OF YOUR MODULE
+
+                name 'VolumeControlView' // YOUR LIBRARY NAME
+                description 'Visual regulator can be connected to a player or other smart house’s device making the process of controlling the level of a particular characteristic much easier.' // YOUR LIBRARY DESCRIPTION
+                url 'https://github.com/agilie/VolumeControlView' // YOUR SITE
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+
+                    }
+                }
+                scm {
+                    connection 'https://github.com/agilie/VolumeControlView.git' // YOUR GIT REPO
+                    developerConnection 'https://github.com/agilie/VolumeControlView.git' // YOUR GIT REPO
+                    url 'https://github.com/agilie/VolumeControlView' // YOUR SITE
+                }
+            }
+        }
+    }
+}
