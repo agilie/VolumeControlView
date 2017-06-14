@@ -44,7 +44,7 @@ var shiningFrequency : Float
 
 Add dependency in your `build.gradle` file:
 ````gradle
-
+compile 'com.agilie:volume-control-view:1.0'
 ````
 
 ### Maven
