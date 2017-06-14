@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="VolumeControlView">
 
-        <attr name="innerCircleColor" format="color" />
+        <attr name="innerCircleColor" format="color"  />
         <attr name="movableCircleColor" format="color" />
         <attr name="splineCircleColor" format="color" />
         <attr name="controllerSpace" format="float" />
