@@ -156,6 +156,7 @@ class VolumeControlView : View, View.OnTouchListener {
         CONTROLLER_SPACE = if (controllerSpace > 0) controllerSpace else CONTROLLER_SPACE
         MOVABLE_CIRCLE_RADIUS = if (movableCircleRadius > 0) movableCircleRadius else MOVABLE_CIRCLE_RADIUS
 
+        attributes.recycle()
         setLayerType(ViewGroup.LAYER_TYPE_SOFTWARE, null)
         setWillNotDraw(false)
         setOnTouchListener(this)
