@@ -78,11 +78,10 @@ This library is open-sourced by [Agilie Team](https://www.agilie.com) <info@agil
 - [Eugene Surkov](https://github.com/ukevgen)
 
 ## Contact us
-If you have any questions, suggestions or just need a help with web or mobile development, please email us at
-<android@agilie.com>
-You can ask us anything from basic to complex questions. 
-
-We will continue publishing new open-source projects. Stay with us, more updates will follow!
+If you have any questions, suggestions or just need a help with web or mobile development, please email us at <br />
+<android@agilie.com> <br />
+You can ask us anything from basic to complex questions. <br />
+We will continue publishing new open-source projects. Stay with us, more updates will follow! <br />
 
 ## License
 
