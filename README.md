@@ -1,4 +1,6 @@
 # VolumeControlView
+[ ![Download](https://api.bintray.com/packages/agilie/maven/VolumeControlView/images/download.svg) ](https://bintray.com/agilie/maven/VolumeControlView/_latestVersion)
+
 We’re happy to introduce you a new free regulator VolumeControlView based on our lightweight open-source visual component that doesn't require extra lines of code and can be easily integrated into your project. Visual regulator can be connected to a player or other smart house’s device making the process of controlling the level of a particular characteristic much easier.
 
 ### Demo
