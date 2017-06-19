@@ -62,6 +62,10 @@ Add  dependency in your `.pom` file:
 
 VolumeControlView works on Android API 19+
 
+## Troubleshooting
+
+Problems? Check the [Issues](https://github.com/agilie/VolumeControlView/issues) block
+to find the solution or create an new issue that we will fix asap.
 
 ## Author
 
