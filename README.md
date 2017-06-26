@@ -1,4 +1,6 @@
 # VolumeControlView
+[ ![Download](https://api.bintray.com/packages/agilie/maven/VolumeControlView/images/download.svg) ](https://bintray.com/agilie/maven/VolumeControlView/_latestVersion)
+
 We’re happy to introduce you a new free regulator VolumeControlView based on our lightweight open-source visual component that doesn't require extra lines of code and can be easily integrated into your project. Visual regulator can be connected to a player or other smart house’s device making the process of controlling the level of a particular characteristic much easier.
 
 ### Demo
@@ -62,6 +64,10 @@ Add  dependency in your `.pom` file:
 
 VolumeControlView works on Android API 19+
 
+## Troubleshooting
+
+Problems? Check the [Issues](https://github.com/agilie/VolumeControlView/issues) block
+to find the solution or create an new issue that we will fix asap.
 
 ## Author
 
@@ -72,8 +78,10 @@ This library is open-sourced by [Agilie Team](https://www.agilie.com) <info@agil
 - [Eugene Surkov](https://github.com/ukevgen)
 
 ## Contact us
-<android@agilie.com>
-
+If you have any questions, suggestions or just need a help with web or mobile development, please email us at <br />
+<android@agilie.com> <br />
+You can ask us anything from basic to complex questions. <br />
+We will continue publishing new open-source projects. Stay with us, more updates will follow! <br />
 
 ## License
 
