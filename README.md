@@ -1,6 +1,6 @@
 <p align="center">
 
-<img src="https://user-images.githubusercontent.com/1777595/28303339-57071e98-6b9b-11e7-89a4-845ad22e04ce.png" alt="CircularPicker" title="CircularPicker" width="500"/>
+<img src="https://user-images.githubusercontent.com/1777595/28303339-57071e98-6b9b-11e7-89a4-845ad22e04ce.png" alt="CircularPicker" title="CircularPicker" width="600"/>
 </p>
 
 <p>
