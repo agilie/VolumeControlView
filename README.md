@@ -1,11 +1,35 @@
-# VolumeControlView
-[ ![Download](https://api.bintray.com/packages/agilie/maven/VolumeControlView/images/download.svg) ](https://bintray.com/agilie/maven/VolumeControlView/_latestVersion)
+<p align="center">
+
+<img src="https://user-images.githubusercontent.com/1777595/28303339-57071e98-6b9b-11e7-89a4-845ad22e04ce.png" alt="CircularPicker" title="CircularPicker" width="500"/>
+</p>
+
+<p>
+
+<p align="center">
+
+<a href="https://www.agilie.com?utm_source=github&utm_medium=referral&utm_campaign=Git_Swift&utm_term=AGVolumeControlView">
+<img src="https://img.shields.io/badge/Made%20by-Agilie-green.svg?style=flat" alt="Made by Agilie">
+</a>
+
+<a href='https://bintray.com/agilie/maven/VolumeControlView/_latestVersion'>
+<img src='https://api.bintray.com/packages/agilie/maven/VolumeControlView/images/download.svg'>
+</a>
+
+<a href='https://raw.githubusercontent.com/agilie/VolumeControlView/master/LICENSE.txt'>
+<img src='https://img.shields.io/badge/license-MIT-blue.svg' alt='GitHub license'>
+</a>
+
+</p>
 
 We’re happy to introduce you a new free regulator VolumeControlView based on our lightweight open-source visual component that doesn't require extra lines of code and can be easily integrated into your project. Visual regulator can be connected to a player or other smart house’s device making the process of controlling the level of a particular characteristic much easier.
 
 ### Demo
 
 <img src="https://user-images.githubusercontent.com/17047537/26981465-ef1759ae-4d3d-11e7-85bd-b04338761719.gif"> <img src="https://user-images.githubusercontent.com/17047537/26981461-edd0ee7a-4d3d-11e7-8b79-5f9ce4a80552.gif"> 
+
+## Link to iOS repo
+
+Check out our iOS [VolumeControlView](https://github.com/agilie/AGVolumeControlView) also!
 
 ## Example
 To run the example project, clone the repo, and run sample.
