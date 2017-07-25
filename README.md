@@ -1,13 +1,13 @@
 <p align="center">
 
-<img src="https://user-images.githubusercontent.com/1777595/28303339-57071e98-6b9b-11e7-89a4-845ad22e04ce.png" alt="CircularPicker" title="CircularPicker" width="600"/>
+<img src="https://user-images.githubusercontent.com/1777595/28303339-57071e98-6b9b-11e7-89a4-845ad22e04ce.png" alt="VolumeControlView" title="VolumeControlView" width="75%"/>
 </p>
 
 <p>
 
 <p align="center">
 
-<a href="https://www.agilie.com?utm_source=github&utm_medium=referral&utm_campaign=Git_Swift&utm_term=AGVolumeControlView">
+<a href="https://www.agilie.com?utm_source=github&utm_medium=referral&utm_campaign=Git_Android_Kotlin&utm_term=VolumeControlView">
 <img src="https://img.shields.io/badge/Made%20by-Agilie-green.svg?style=flat" alt="Made by Agilie">
 </a>
 
